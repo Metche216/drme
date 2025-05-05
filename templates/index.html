@@ -1,39 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Dr. MedCare - Your Health, Our Priority{% endblock %}
+{% block title %}Dr. MediCare - Su Salud, Nuestra Prioridad{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placeholder.svg?height=800&width=1600');">
+<section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg.jpg" %}'); background-size: cover; background-position: center top -150px;">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
                 <div class="text-white">
-                    <h1 class="display-4 fw-bold mb-4">Your Health Is Our Top Priority</h1>
-                    <p class="lead mb-4">Providing exceptional healthcare services with a personal touch. Our team of experienced medical professionals is dedicated to your wellbeing.</p>
+                    <h1 class="display-4 fw-bold mb-4">Excelencia en Otorrinolaringología</h1>
+                    <p class="lead mb-4">Brindamos servicios de salud excepcionales con un toque personal. Nuestro equipo de profesionales médicos experimentados está dedicado a su bienestar.</p>
                     <div class="d-flex gap-3">
-                        <a href="/appointment/" class="btn btn-primary btn-lg">Book Appointment</a>
-                        <a href="/services/" class="btn btn-outline-light btn-lg">Our Services</a>
+                        <a href="/cita/" class="btn btn-primary btn-lg">Reservar Cita</a>
+                        <a href="/servicios/" class="btn btn-outline-light btn-lg">Servicios</a>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- About Doctor Section -->
-<section class="section bg-light">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="https://placeholder.svg?height=600&width=600" alt="Doctor" class="img-fluid rounded-3 shadow">
-            </div>
-            <div class="col-lg-6">
-                <h2 class="display-6 fw-bold mb-4">Dr. Jane Smith</h2>
-                <p class="lead text-muted">Board Certified Physician with 15+ Years of Experience</p>
-                <p class="mb-4">Dr. Smith graduated from Harvard Medical School and completed her residency at Johns Hopkins Hospital. She specializes in family medicine and has been serving the community for over 15 years.</p>
-                <p class="mb-4">Her approach to medicine focuses on preventive care and building long-term relationships with patients to ensure the best possible health outcomes.</p>
-                <a href="/about/" class="btn btn-primary">Learn More About Dr. Smith</a>
             </div>
         </div>
     </div>
@@ -43,21 +26,21 @@
 <section class="section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Our Services</h2>
-            <p class="lead text-muted">Comprehensive healthcare services for you and your family</p>
+            <h2 class="display-5 fw-bold">Pone tu salud en primer lugar</h2>
+            <p class="lead text-muted">Encontrá la solución que estás necesitando</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body text-center p-4">
                         <div class="mb-4">
-                            <i class="bi bi-heart-pulse text-primary" style="font-size: 3rem;"></i>
+                            <i class="bi bi-clipboard-pulse text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Preventive Care</h4>
-                        <p class="card-text">Regular check-ups, screenings, and immunizations to keep you healthy and prevent illness.</p>
+                        <h4 class="card-title mb-3">Certeza diagnóstica</h4>
+                        <p class="card-text">La clave del tratamiento reside en la identificación del problema</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 text-center pb-4">
-                        <a href="/services/#preventive" class="btn btn-outline-primary">Learn More</a>
+                        <a href="/servicios/#preventiva" class="btn btn-outline-primary">Más Información</a>
                     </div>
                 </div>
             </div>
@@ -65,13 +48,13 @@
                 <div class="card h-100">
                     <div class="card-body text-center p-4">
                         <div class="mb-4">
-                            <i class="bi bi-clipboard2-pulse text-primary" style="font-size: 3rem;"></i>
+                            <i class="bi bi-gem text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Chronic Disease Management</h4>
-                        <p class="card-text">Comprehensive care for conditions like diabetes, hypertension, and asthma.</p>
+                        <h4 class="card-title mb-3">Cirugía avanzada</h4>
+                        <p class="card-text">Indicacion quirúrgica ética para enfermedades que así lo requieran.</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 text-center pb-4">
-                        <a href="/services/#chronic" class="btn btn-outline-primary">Learn More</a>
+                        <a href="/servicios/#cronicas" class="btn btn-outline-primary">Más Información</a>
                     </div>
                 </div>
             </div>
@@ -79,19 +62,19 @@
                 <div class="card h-100">
                     <div class="card-body text-center p-4">
                         <div class="mb-4">
-                            <i class="bi bi-lungs text-primary" style="font-size: 3rem;"></i>
+                            <i class="bi bi-capslock text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Specialized Treatments</h4>
-                        <p class="card-text">Advanced treatments for specific conditions tailored to your individual needs.</p>
+                        <h4 class="card-title mb-3">Medicina de resultados</h4>
+                        <p class="card-text">Atención centrada en el paciente, la comprensión de la enfermedad y la medicina basada en la evidencia. </p>
                     </div>
                     <div class="card-footer bg-transparent border-0 text-center pb-4">
-                        <a href="/services/#specialized" class="btn btn-outline-primary">Learn More</a>
+                        <a href="/servicios/#especializados" class="btn btn-outline-primary">Más Información</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center mt-5">
-            <a href="/services/" class="btn btn-primary">View All Services</a>
+            <a href="/servicios/" class="btn btn-primary">Ver Todos los Servicios</a>
         </div>
     </div>
 </section>
@@ -100,8 +83,8 @@
 <section class="section bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Why Choose Us</h2>
-            <p class="lead text-muted">What sets our practice apart</p>
+            <h2 class="display-5 fw-bold">¿Por Qué Elegirnos?</h2>
+            <p class="lead text-muted">Lo que nos distingue</p>
         </div>
         <div class="row g-4">
             <div class="col-md-3">
@@ -109,8 +92,8 @@
                     <div class="mb-3">
                         <i class="bi bi-award text-primary" style="font-size: 2.5rem;"></i>
                     </div>
-                    <h4>Experienced Team</h4>
-                    <p class="text-muted">Our medical professionals have years of experience in their fields.</p>
+                    <h4>Equipo Experimentado</h4>
+                    <p class="text-muted">Nuestros profesionales médicos tienen años de experiencia en sus campos.</p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -118,8 +101,8 @@
                     <div class="mb-3">
                         <i class="bi bi-clock text-primary" style="font-size: 2.5rem;"></i>
                     </div>
-                    <h4>Minimal Wait Times</h4>
-                    <p class="text-muted">We respect your time and strive to minimize waiting periods.</p>
+                    <h4>Tiempos de Espera Mínimos</h4>
+                    <p class="text-muted">Respetamos su tiempo y nos esforzamos por minimizar los períodos de espera.</p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -127,8 +110,8 @@
                     <div class="mb-3">
                         <i class="bi bi-gear text-primary" style="font-size: 2.5rem;"></i>
                     </div>
-                    <h4>Modern Equipment</h4>
-                    <p class="text-muted">State-of-the-art medical equipment for accurate diagnosis and treatment.</p>
+                    <h4>Equipamiento Moderno</h4>
+                    <p class="text-muted">Equipos médicos de última generación para diagnósticos y tratamientos precisos.</p>
                 </div>
             </div>
             <div class="col-md-3">
@@ -136,8 +119,8 @@
                     <div class="mb-3">
                         <i class="bi bi-heart text-primary" style="font-size: 2.5rem;"></i>
                     </div>
-                    <h4>Patient-Centered Care</h4>
-                    <p class="text-muted">Your health and comfort are our top priorities.</p>
+                    <h4>Atención Centrada en el Paciente</h4>
+                    <p class="text-muted">Su salud y comodidad son nuestras principales prioridades.</p>
                 </div>
             </div>
         </div>
@@ -148,8 +131,8 @@
 <section class="section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Patient Testimonials</h2>
-            <p class="lead text-muted">What our patients say about us</p>
+            <h2 class="display-5 fw-bold">Testimonios de Pacientes</h2>
+            <p class="lead text-muted">Lo que dicen nuestros pacientes sobre nosotros</p>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -157,10 +140,10 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Patient" class="rounded-circle me-3" width="50" height="50">
+                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
                                 <div>
-                                    <h5 class="mb-0">Sarah Johnson</h5>
-                                    <small class="text-muted">Patient for 5 years</small>
+                                    <h5 class="mb-0">Sara Jiménez</h5>
+                                    <small class="text-muted">Paciente por 5 años</small>
                                 </div>
                             </div>
                             <div class="text-warning">
@@ -171,7 +154,7 @@
                                 <i class="bi bi-star-fill"></i>
                             </div>
                         </div>
-                        <p class="card-text">"Dr. Smith has been my family doctor for 5 years. She is attentive, knowledgeable, and truly cares about her patients. I highly recommend her practice."</p>
+                        <p class="card-text">"La Dra. Martínez ha sido mi médica familiar durante 5 años. Es atenta, conocedora y realmente se preocupa por sus pacientes. La recomiendo ampliamente."</p>
                     </div>
                 </div>
             </div>
@@ -180,10 +163,10 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Patient" class="rounded-circle me-3" width="50" height="50">
+                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
                                 <div>
-                                    <h5 class="mb-0">Michael Brown</h5>
-                                    <small class="text-muted">Patient for 3 years</small>
+                                    <h5 class="mb-0">Miguel Moreno</h5>
+                                    <small class="text-muted">Paciente por 3 años</small>
                                 </div>
                             </div>
                             <div class="text-warning">
@@ -194,7 +177,7 @@
                                 <i class="bi bi-star-fill"></i>
                             </div>
                         </div>
-                        <p class="card-text">"The staff is friendly and professional. Dr. Smith takes the time to listen to my concerns and explains everything clearly. Best medical practice in town!"</p>
+                        <p class="card-text">"El personal es amable y profesional. La Dra. Martínez se toma el tiempo para escuchar mis preocupaciones y explica todo claramente. ¡El mejor consultorio médico de la ciudad!"</p>
                     </div>
                 </div>
             </div>
@@ -203,10 +186,10 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Patient" class="rounded-circle me-3" width="50" height="50">
+                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
                                 <div>
-                                    <h5 class="mb-0">Emily Davis</h5>
-                                    <small class="text-muted">Patient for 2 years</small>
+                                    <h5 class="mb-0">Elena Díaz</h5>
+                                    <small class="text-muted">Paciente por 2 años</small>
                                 </div>
                             </div>
                             <div class="text-warning">
@@ -217,13 +200,13 @@
                                 <i class="bi bi-star-fill"></i>
                             </div>
                         </div>
-                        <p class="card-text">"I appreciate the minimal wait times and how Dr. Smith always follows up after appointments. She genuinely cares about her patients' wellbeing."</p>
+                        <p class="card-text">"Aprecio los tiempos de espera mínimos y cómo la Dra. Martínez siempre hace seguimiento después de las citas. Realmente se preocupa por el bienestar de sus pacientes."</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="/testimonials/" class="btn btn-outline-primary">Read More Testimonials</a>
+            <a href="/testimonios/" class="btn btn-outline-primary">Leer Más Testimonios</a>
         </div>
     </div>
 </section>
@@ -233,45 +216,45 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="display-5 fw-bold">Book Your Appointment Today</h2>
-                <p class="lead">Schedule a visit with Dr. Smith and take the first step towards better health.</p>
+                <h2 class="display-5 fw-bold">Reserve Su Cita Hoy</h2>
+                <p class="lead">Programe una visita con la Dra. Martínez y dé el primer paso hacia una mejor salud.</p>
                 <ul class="list-unstyled mb-4">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Same-day appointments available</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Online scheduling for your convenience</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Flexible hours including evenings</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Citas disponibles el mismo día</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Programación en línea para su comodidad</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i> Horarios flexibles incluyendo tardes</li>
                 </ul>
-                <a href="/appointment/" class="btn btn-light btn-lg">Book Now</a>
+                <a href="/cita/" class="btn btn-light btn-lg">Reservar Ahora</a>
             </div>
             <div class="col-lg-6">
                 <div class="card border-0">
                     <div class="card-body p-4">
-                        <h4 class="card-title text-dark mb-4">Quick Appointment Request</h4>
+                        <h4 class="card-title text-dark mb-4">Solicitud Rápida de Cita</h4>
                         <form>
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Your Name" required>
+                                <input type="text" class="form-control" placeholder="Su Nombre" required>
                             </div>
                             <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Email Address" required>
+                                <input type="email" class="form-control" placeholder="Correo Electrónico" required>
                             </div>
                             <div class="mb-3">
-                                <input type="tel" class="form-control" placeholder="Phone Number" required>
+                                <input type="tel" class="form-control" placeholder="Número de Teléfono" required>
                             </div>
                             <div class="mb-3">
                                 <select class="form-select" required>
-                                    <option selected disabled value="">Select Service</option>
-                                    <option>General Check-up</option>
-                                    <option>Preventive Care</option>
-                                    <option>Chronic Disease Management</option>
-                                    <option>Specialized Treatment</option>
+                                    <option selected disabled value="">Seleccionar Servicio</option>
+                                    <option>Chequeo General</option>
+                                    <option>Atención Preventiva</option>
+                                    <option>Control de Enfermedades Crónicas</option>
+                                    <option>Tratamiento Especializado</option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <input type="date" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <textarea class="form-control" rows="3" placeholder="Additional Notes (Optional)"></textarea>
+                                <textarea class="form-control" rows="3" placeholder="Notas Adicionales (Opcional)"></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary w-100">Request Appointment</button>
+                            <button type="submit" class="btn btn-primary w-100">Solicitar Cita</button>
                         </form>
                     </div>
                 </div>
@@ -284,8 +267,8 @@
 <section class="section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Contact Information</h2>
-            <p class="lead text-muted">We're here to help you</p>
+            <h2 class="display-5 fw-bold">Información de Contacto</h2>
+            <p class="lead text-muted">Estamos aquí para ayudarle</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
@@ -294,9 +277,9 @@
                         <div class="mb-4">
                             <i class="bi bi-geo-alt text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Location</h4>
-                        <p class="card-text">123 Medical Plaza<br>Healthcare City, HC 12345</p>
-                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary mt-3">Get Directions</a>
+                        <h4 class="card-title mb-3">Ubicación</h4>
+                        <p class="card-text">123 Plaza Médica<br>Ciudad Salud, CS 12345</p>
+                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary mt-3">Obtener Indicaciones</a>
                     </div>
                 </div>
             </div>
@@ -306,9 +289,9 @@
                         <div class="mb-4">
                             <i class="bi bi-telephone text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Phone</h4>
-                        <p class="card-text">Main: (123) 456-7890<br>Fax: (123) 456-7891</p>
-                        <a href="tel:+11234567890" class="btn btn-outline-primary mt-3">Call Now</a>
+                        <h4 class="card-title mb-3">Teléfono</h4>
+                        <p class="card-text">Principal: (123) 456-7890<br>Fax: (123) 456-7891</p>
+                        <a href="tel:+11234567890" class="btn btn-outline-primary mt-3">Llamar Ahora</a>
                     </div>
                 </div>
             </div>
@@ -318,9 +301,9 @@
                         <div class="mb-4">
                             <i class="bi bi-clock text-primary" style="font-size: 3rem;"></i>
                         </div>
-                        <h4 class="card-title mb-3">Office Hours</h4>
-                        <p class="card-text">Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 9:00 AM - 1:00 PM<br>Sunday: Closed</p>
-                        <a href="/contact/" class="btn btn-outline-primary mt-3">Contact Us</a>
+                        <h4 class="card-title mb-3">Horario de Atención</h4>
+                        <p class="card-text">Lunes - Viernes: 9:00 AM - 6:00 PM<br>Sábado: 9:00 AM - 1:00 PM<br>Domingo: Cerrado</p>
+                        <a href="/contacto/" class="btn btn-outline-primary mt-3">Contáctenos</a>
                     </div>
                 </div>
             </div>
@@ -332,7 +315,7 @@
 <section class="section p-0">
     <div class="container-fluid p-0">
         <div class="ratio ratio-21x9" style="max-height: 400px;">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.2219901290355!2d-74.00369368400567!3d40.71312937933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a23e28c1191%3A0x49f75d3281df052a!2s150%20Park%20Row%2C%20New%20York%2C%20NY%2010007%2C%20USA!5e0!3m2!1sen!2sus!4v1580234295259!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3799.6126395473984!2d-63.17419892403637!3d-17.76288187450161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTfCsDQ1JzQ2LjQiUyA2M8KwMTAnMTcuOSJX!5e0!3m2!1ses-419!2sbo!4v1746483752192!5m2!1ses-419!2sbo" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
 </section>
