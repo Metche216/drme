@@ -1,16 +1,20 @@
 from pathlib import Path
-from decouple import config
+from dotenv import load_dotenv, find_dotenv
 from django.utils.translation import gettext_lazy as _
 
 import os
 
+ENV_FILE = find_dotenv()
+if ENV_FILE:
+    load_dotenv(ENV_FILE)
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -129,3 +133,10 @@ LANGUAGES = [
     ('en', _('English')),
     ('es', _('Spanish')),
 ]
+
+
+# AUTH0 Configuration
+
+AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
