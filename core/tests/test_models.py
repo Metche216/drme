@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from core.models import Testimonio
+from core.models import Testimonio, User
 
 class ModelTestSuite(TestCase):
     def test_create_new_testimonio(self):
@@ -15,3 +15,13 @@ class ModelTestSuite(TestCase):
         self.assertEqual(all_testimonios.count(), 1)
         self.assertEqual(all_testimonios[0].name, "John Doe")
 
+    def test_create_new_user(self):
+        """ Test creating a new user instance """
+        user = User.objects.create_user(
+            username="testuser",
+            password="testpassword",
+            email="useremail@example.com",
+            )
+        all_users = User.objects.all()
+        self.assertEqual(all_users.count(), 1)
+        self.assertEqual(all_users[0].username, "testuser")

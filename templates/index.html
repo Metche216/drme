@@ -4,6 +4,21 @@
 {% block title %}Dr. MediCare - Su Salud, Nuestra Prioridad{% endblock %}
 
 {% block content %}
+
+<!-- <section>
+    <div class="bg-dark  text-center py-5 text-white">
+       show logged user:
+        {% if user.is_authenticated %}
+            {{user.username}} <br>
+            {% else %}
+            <p class="lead">not logged.</p>
+            {{session.userinfo.name}}
+
+        {% endif %}
+
+
+    </div>
+</section> -->
 <!-- Hero Section -->
 <section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg.jpg" %}'); background-size: cover; background-position: center top -150px;">
     <div class="container">

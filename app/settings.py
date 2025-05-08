@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'pages',
 
 ]
 
@@ -134,6 +135,9 @@ LANGUAGES = [
     ('es', _('Spanish')),
 ]
 
+
+# CUSTOM USER MODEL
+AUTH_USER_MODEL = 'core.User'
 
 # AUTH0 Configuration
 

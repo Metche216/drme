@@ -5,8 +5,11 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from urllib.parse import quote_plus, urlencode
 
+from core.models import User
+
 
 def index(request):
+
     return render(
         request,
         "index.html",
@@ -34,9 +37,23 @@ def login(request):
         request, request.build_absolute_uri(reverse("callback"))
     )
 
+
 def callback(request):
     token = oauth.auth0.authorize_access_token(request)
     request.session["user"] = token
+    #Check if the user is already in the database
+    print("pre try block")
+    try:
+        user_email = request.session["user"]["userinfo"]["email"]
+        user, created = User.objects.get_or_create(email=user_email)
+        print(created)
+        print(user)
+        if created:
+            user.save()
+            print("user created")
+    except KeyError:
+        print("KeyError: user not found")
+        user = None
     return redirect(request.build_absolute_uri(reverse("index")))
 
 def logout(request):
