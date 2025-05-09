@@ -5,20 +5,7 @@
 
 {% block content %}
 
-<!-- <section>
-    <div class="bg-dark  text-center py-5 text-white">
-       show logged user:
-        {% if user.is_authenticated %}
-            {{user.username}} <br>
-            {% else %}
-            <p class="lead">not logged.</p>
-            {{session.userinfo.name}}
 
-        {% endif %}
-
-
-    </div>
-</section> -->
 <!-- Hero Section -->
 <section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/hero-bg.jpg" %}'); background-size: cover; background-position: center top -150px;">
     <div class="container">
@@ -28,7 +15,7 @@
                     <h1 class="display-4 fw-bold mb-4">Excelencia en Otorrinolaringología</h1>
                     <p class="lead mb-4">Servicios de salud excepcionales con un toque personal. Experiencia y profesionalismo dedicado a tu bienestar.</p>
                     <div class="d-flex gap-3">
-                        <a href="#reservar-cita" class="btn btn-primary btn-lg">Reservar Cita</a>
+                        <a href="{% url 'list_appointments' %}" class="btn btn-primary btn-lg">Turnos</a>
                         <a href="#servicios" class="btn btn-outline-light btn-lg">Servicios</a>
                     </div>
                 </div>
@@ -294,7 +281,7 @@
                         </div>
                         <h4 class="card-title mb-3">Ubicación</h4>
                         <p class="card-text">123 Plaza Médica<br>Ciudad Salud, CS 12345</p>
-                        <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary mt-3">Obtener Indicaciones</a>
+                        <a href="https://www.google.com/maps/dir//-17.7628396,-63.1718405/@-17.7626771,-63.1736081,17.5z?entry=ttu&g_ep=EgoyMDI1MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn btn-outline-primary mt-3">Obtener Indicaciones</a>
                     </div>
                 </div>
             </div>

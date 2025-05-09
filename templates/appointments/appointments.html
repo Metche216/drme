@@ -1,0 +1,73 @@
+{% extends 'base_nf.html' %}
+
+{% load static %}
+
+{% block title %}Citas - Dr. MediCare{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section d-flex align-items-center justify-content-center text-center text-white"
+    style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{% static "images/bg_turnos.jpg" %}');
+           background-size: cover;
+           background-position: center;
+           height: 200px; /* Adjusted height for a header-like appearance */
+           max-height: 200px; /* Ensure it doesn't exceed this height */
+           overflow: hidden;">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Citas Médicas</h1>
+        <p class="lead">Consulta tus citas anteriores y reserva nuevas citas fácilmente.</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="section">
+    <div class="container">
+        <!-- Previous Appointments -->
+        <div class="mb-5">
+            <h3 class="fw-bold">Citas Anteriores</h3>
+            <ul class="list-group">
+                <!-- Placeholder for previous appointments -->
+                <li class="list-group-item">Cita 1: 10 de Mayo, 2025 - 10:00 AM</li>
+                <li class="list-group-item">Cita 2: 15 de Mayo, 2025 - 2:00 PM</li>
+                <li class="list-group-item">Cita 3: 20 de Mayo, 2025 - 11:30 AM</li>
+            </ul>
+        </div>
+
+        <!-- Available Slots -->
+        <div>
+            <h3 class="fw-bold">Espacios Disponibles</h3>
+            <p class="text-muted">Selecciona un horario disponible para reservar tu cita.</p>
+            <div class="row g-4">
+                <!-- Placeholder for available slots -->
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">12 de Junio, 2025</h5>
+                            <p class="card-text">10:00 AM - 10:30 AM</p>
+                            <a href="#" class="btn btn-primary">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">12 de Junio, 2025</h5>
+                            <p class="card-text">11:00 AM - 11:30 AM</p>
+                            <a href="#" class="btn btn-primary">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">12 de Junio, 2025</h5>
+                            <p class="card-text">2:00 PM - 2:30 PM</p>
+                            <a href="#" class="btn btn-primary">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

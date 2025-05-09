@@ -1,5 +1,6 @@
 import json
 from authlib.integrations.django_client import OAuth
+from django.contrib.auth import login as local_login
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -9,6 +10,11 @@ from core.models import User
 
 
 def index(request):
+    try:
+        user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
+        local_login(request, user)
+    except KeyError:
+        user = None
 
     return render(
         request,
@@ -16,6 +22,7 @@ def index(request):
         context={
             "session": request.session.get("user"),
             "pretty": json.dumps(request.session.get("user"), indent=4),
+            "user": user,
         },
     )
 
@@ -45,7 +52,7 @@ def callback(request):
     print("pre try block")
     try:
         user_email = request.session["user"]["userinfo"]["email"]
-        user, created = User.objects.get_or_create(email=user_email)
+        user, created = User.objects.get_or_create(email=user_email, username=user_email)
         print(created)
         print(user)
         if created:

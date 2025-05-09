@@ -5,8 +5,6 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path("login", views.login, name="login"),
-    path("logout", views.logout, name="logout"),
-    path("callback", views.callback, name="callback"),
+
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
