@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-import datetime
+from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
@@ -22,18 +22,23 @@ def fetch_appointments():
         # Build the Google Calendar API service
         service = build("calendar", "v3", credentials=creds)
 
-        # Call the Calendar API
-        now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
         print("Fetching the next 10 events from the calendar...")
+        time_min = datetime.utcnow().isoformat() + 'Z'  # ahora
+        time_max = (datetime.utcnow() + timedelta(days=30)).isoformat() + 'Z'
+
+        calendar_list = service.calendarList().list().execute()
+        print('calendar_list', calendar_list, flush=True)
+
 
         events_result = service.events().list(
-            calendarId="primary",  # Use "primary" for the default calendar or specify a calendar ID
-            timeMin=now,
+            calendarId="drmatiasetcheverry@gmail.com",
+            timeMin=time_min,
+            timeMax=time_max,
             maxResults=10,
             singleEvents=True,
             orderBy="startTime",
         ).execute()
-
+        print('events_result', events_result)
         events = events_result.get("items", [])
 
         if not events:
@@ -51,11 +56,8 @@ def fetch_appointments():
         return []
 
 def api_fetch_appointments(request):
-    """
-    API endpoint to fetch appointments.
-    Returns a JSON response with the events.
-    """
-    appointments = fetch_appointments()  # Fetch events synchronously
+    print("API endpoint called")
+    appointments = fetch_appointments()
     return JsonResponse({"appointments": appointments})
 
 def list_appointments(request):
