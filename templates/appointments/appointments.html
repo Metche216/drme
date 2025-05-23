@@ -28,6 +28,7 @@
         margin-top: 1rem;
     }
 </style>
+
 <!-- Hero Section -->
 <section class="hero-section d-flex align-items-center justify-content-center text-center text-white">
     <div class="container">
@@ -39,48 +40,22 @@
 <section class="section">
     <div class="container">
         <h3 class="fw-bold">Próximas Citas</h3>
-        <p id="loading-message">Cargando citas...</p>
-        <ul id="appointments-list" class="list-group">
-            <!-- Appointments will be dynamically populated here -->
-        </ul>
+        {% if appointments %}
+            <ul class="list-group">
+                {% for appointment in appointments %}
+                    <li class="list-group-item">
+                        <strong>Inicio:</strong> {{ appointment.start }}<br>
+                        <strong>Fin:</strong> {{ appointment.end }}<br>
+                        <strong>Paciente:</strong> {{ appointment.patient }}<br>
+                        <strong>Email:</strong> {{ appointment.email }}<br>
+                        <strong>Teléfono:</strong> {{ appointment.cellphone }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay citas próximas.</p>
+        {% endif %}
     </div>
 </section>
 
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        const appointmentsList = document.getElementById("appointments-list");
-        const loadingMessage = document.getElementById("loading-message");
-
-        try {
-            // Fetch appointments from the API
-            const response = await fetch("/turnos/api/appointments/");
-            if (!response.ok) {
-                throw new Error("Error fetching appointments");
-            }
-
-            const data = await response.json();
-
-            // Clear the loading message
-            loadingMessage.style.display = "none";
-
-            // Populate the appointments list
-            if (data.appointments.length > 0) {
-                data.appointments.forEach((appointment) => {
-                    const listItem = document.createElement("li");
-                    listItem.className = "list-group-item";
-                    listItem.textContent = `${appointment.start}: ${appointment.summary}`;
-                    appointmentsList.appendChild(listItem);
-                });
-            } else {
-                const noAppointments = document.createElement("li");
-                noAppointments.className = "list-group-item";
-                noAppointments.textContent = "No hay citas próximas.";
-                appointmentsList.appendChild(noAppointments);
-            }
-        } catch (error) {
-            console.error("Error fetching appointments:", error);
-            loadingMessage.textContent = "Error al cargar las citas.";
-        }
-    });
-</script>
 {% endblock %}

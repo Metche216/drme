@@ -6,6 +6,10 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from decouple import config
 
+from core.models import Appointment
+
+import re
+
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 def fetch_appointments():
@@ -27,28 +31,55 @@ def fetch_appointments():
         time_max = (datetime.utcnow() + timedelta(days=30)).isoformat() + 'Z'
 
         calendar_list = service.calendarList().list().execute()
-        print('calendar_list', calendar_list, flush=True)
-
 
         events_result = service.events().list(
             calendarId="drmatiasetcheverry@gmail.com",
             timeMin=time_min,
             timeMax=time_max,
-            maxResults=10,
+            maxResults=50,
             singleEvents=True,
             orderBy="startTime",
         ).execute()
-        print('events_result', events_result)
+
         events = events_result.get("items", [])
 
         if not events:
             print("No upcoming events found.")
             return []
+        else:
+            for event in events:
+                start = event["start"].get("dateTime")
+                end = event["end"].get("dateTime")
+                patient_data = re.split(r"\n", event['description'])
+                patient = patient_data[1]
+                email = patient_data[2]
+                cellphone = patient_data[3]
+                appointment, created = Appointment.objects.get_or_create(
 
-        # Return the events as a list of dictionaries
+                    email=email,
+                    defaults={
+                        "patient": patient,
+                        "cellphone": cellphone,
+                        "start":start,
+                        "end":end,
+                    }
+                )
+
+                if created:
+                    print(f"Created new appointment for {email}")
+
+
+        all_appointments = Appointment.objects.all()
+
         return [
-            {"start": event["start"].get("dateTime", event["start"].get("date")), "summary": event["summary"]}
-            for event in events
+            {
+                start: appointment.start,
+                end: appointment.end,
+                patient: appointment.patient,
+                cellphone: appointment.cellphone,
+                email: appointment.email,
+            }
+            for appointment in all_appointments
         ]
 
     except HttpError as error:
@@ -56,12 +87,13 @@ def fetch_appointments():
         return []
 
 def api_fetch_appointments(request):
-    print("API endpoint called")
-    appointments = fetch_appointments()
-    return JsonResponse({"appointments": appointments})
+#     print("API endpoint called")
+#     appointments = fetch_appointments()
+    return JsonResponse({"appointments": ''})
 
 def list_appointments(request):
     """
     View to render the appointments page.
     """
-    return render(request, "appointments/appointments.html")
+    appointments = Appointment.objects.all()  # Fetch all appointments from the database
+    return render(request, "appointments/appointments.html", {"appointments": appointments})
