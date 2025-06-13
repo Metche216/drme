@@ -7,6 +7,7 @@ from googleapiclient.errors import HttpError
 from decouple import config
 
 from core.models import Appointment
+from core.utils import create_new_blank_appointments
 
 import re
 
@@ -95,5 +96,6 @@ def list_appointments(request):
     """
     View to render the appointments page.
     """
+
     appointments = Appointment.objects.all()  # Fetch all appointments from the database
     return render(request, "appointments/appointments.html", {"appointments": appointments})
