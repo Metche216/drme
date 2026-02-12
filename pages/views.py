@@ -72,6 +72,7 @@ def logout(request):
             {
                 "returnTo": request.build_absolute_uri(reverse("index")),
                 "client_id": settings.AUTH0_CLIENT_ID,
+                "federated": "",  # Force logout from identity provider (Google, etc.)
             },
             quote_via=quote_plus,
         ),

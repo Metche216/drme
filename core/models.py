@@ -40,6 +40,8 @@ class Appointment(models.Model):
     cellphone = models.CharField(max_length=20)
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
+    google_event_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f'Appointment with {self.patient} on {self.start}'

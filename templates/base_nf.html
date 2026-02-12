@@ -126,6 +126,24 @@
         color: white;
       }
 
+      /* Ensure logout button is visible when navbar is scrolled */
+      .navbar.scrolled .btn-outline-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .navbar.scrolled .btn-outline-primary:hover {
+        background-color: #d7670b;
+        color: white;
+        border-color: #d7670b;
+      }
+
+      /* Greeting text visibility when scrolled */
+      .navbar.scrolled .text-white-50 {
+        color: rgba(33, 37, 41, 0.6) !important;
+      }
+
       .bi {
         color: var(
           --primary-color
@@ -164,37 +182,19 @@
             <li class="nav-item">
               <a class="nav-link active" href="/">Inicio</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/acerca/">Acerca de</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#servicios">Servicios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#testimonios">Testimonios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#contacto">Contacto</a>
-            </li>
             {% if session %}
-            <li class="nav-item">
-              <span class="nav-link">Bienvenido, <strong>{{ session.userinfo.name }}</strong>!</span>
+             <li class="nav-item">
+              <a class="nav-link" href="#">Mi Perfil</a>
             </li>
-            <p><a
-              class=" btn btn-outline-primary text-white ms-lg-3 px-4"
-              href="{% url 'logout' %}">Cerrar Sesión</a></p>
-
+            <li class="nav-item ms-lg-3 d-flex align-items-center">
+                <span class="nav-link text-white-50 small me-2">Hola, {{ session.userinfo.name }}</span>
+                <a class="btn btn-outline-primary px-4" href="{% url 'logout' %}">Cerrar Sesión</a>
+            </li>
             {% else %}
-
             <li class="nav-item">
-              <a
-                class="nav-link btn btn-primary text-white ms-lg-3 px-4"
-                href="{% url 'login' %}"
-                >Iniciar Sesión</a
-              >
-            {% endif %}
-
+              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="{% url 'login' %}">Iniciar Sesión</a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </div>

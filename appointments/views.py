@@ -1,91 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from datetime import datetime, timedelta
-from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from decouple import config
 
-from core.models import Appointment
-from core.utils import create_new_blank_appointments
+from core.models import Appointment, User
+from .services import fetch_appointments, cancel_appointment_service
 
-import re
-
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
-
-def fetch_appointments():
-    """
-    Fetches the next 10 events from the centralized Google Calendar.
-    Returns a list of dictionaries containing event details.
-    """
-    print("Fetching appointments from Google Calendar...")
-    try:
-        # Load the service account file path from the .env file
-        service_account_file = config("GOOGLE_SERVICE_ACCOUNT_FILE")
-        creds = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
-
-        # Build the Google Calendar API service
-        service = build("calendar", "v3", credentials=creds)
-
-        print("Fetching the next 10 events from the calendar...")
-        time_min = datetime.utcnow().isoformat() + 'Z'  # ahora
-        time_max = (datetime.utcnow() + timedelta(days=30)).isoformat() + 'Z'
-
-        calendar_list = service.calendarList().list().execute()
-
-        events_result = service.events().list(
-            calendarId="drmatiasetcheverry@gmail.com",
-            timeMin=time_min,
-            timeMax=time_max,
-            maxResults=50,
-            singleEvents=True,
-            orderBy="startTime",
-        ).execute()
-
-        events = events_result.get("items", [])
-
-        if not events:
-            print("No upcoming events found.")
-            return []
-        else:
-            for event in events:
-                start = event["start"].get("dateTime")
-                end = event["end"].get("dateTime")
-                patient_data = re.split(r"\n", event['description'])
-                patient = patient_data[1]
-                email = patient_data[2]
-                cellphone = patient_data[3]
-                appointment, created = Appointment.objects.get_or_create(
-
-                    email=email,
-                    defaults={
-                        "patient": patient,
-                        "cellphone": cellphone,
-                        "start":start,
-                        "end":end,
-                    }
-                )
-
-                if created:
-                    print(f"Created new appointment for {email}")
-
-
-        all_appointments = Appointment.objects.all()
-
-        return [
-            {
-                start: appointment.start,
-                end: appointment.end,
-                patient: appointment.patient,
-                cellphone: appointment.cellphone,
-                email: appointment.email,
-            }
-            for appointment in all_appointments
-        ]
-
-    except HttpError as error:
-        print(f"An error occurred: {error}")
-        return []
 
 def api_fetch_appointments(request):
 #     print("API endpoint called")
@@ -96,6 +14,69 @@ def list_appointments(request):
     """
     View to render the appointments page.
     """
+    user_session = request.session.get("user")
 
-    appointments = Appointment.objects.all()  # Fetch all appointments from the database
-    return render(request, "appointments/appointments.html", {"appointments": appointments})
+    if not user_session:
+        return redirect("login")
+
+    # Sync appointments from Google Calendar (Temporary: usually done via background task)
+    fetch_appointments()
+
+    user_email = user_session.get("userinfo", {}).get("email")
+    appointments = Appointment.objects.filter(email=user_email).order_by('-start')
+
+    # Extract user info for pre-filling GCal iframe
+    user_info = user_session.get("userinfo", {})
+    context = {
+        "appointments": appointments,
+        "user_name": user_info.get("name", ""),
+        "user_email": user_info.get("email", ""),
+        "session": user_session # Pass session for base template auth check
+    }
+
+    return render(request, "appointments/appointments.html", context)
+
+from datetime import datetime
+def log_debug_view(message):
+    try:
+         with open("d:\\Programming\\DrME\\debug.log", "a") as f:
+            f.write(f"VIEW {datetime.now()}: {message}\n")
+    except Exception as e:
+        print(f"Logging failed: {e}")
+
+def cancel_appointment(request, appointment_id):
+    """
+    View to cancel an appointment.
+    """
+    if request.method == "POST":
+        user_session = request.session.get("user")
+        if not user_session:
+             return redirect("login")
+
+        # Verify ownership (optional but recommended)
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+            user_email = user_session.get("userinfo", {}).get("email")
+
+            log_debug_view(f"Request to cancel {appointment_id} by {user_email}. Appt email: {appointment.email}")
+
+            if appointment.email != user_email:
+                 # Simple authorization check
+                 log_debug_view(f"Optimization check failed: {appointment.email} != {user_email}")
+                 return redirect("list_appointments")
+
+            success = cancel_appointment_service(appointment_id)
+            if success:
+                print(f"Appointment {appointment_id} cancelled successfully.")
+                log_debug_view(f"Appointment {appointment_id} cancelled successfully.")
+            else:
+                print(f"Failed to cancel appointment {appointment_id}.")
+                log_debug_view(f"Failed to cancel appointment {appointment_id}.")
+
+        except Appointment.DoesNotExist:
+            log_debug_view(f"Appointment {appointment_id} does not exist in View.")
+            pass
+
+        return redirect("list_appointments")
+
+    return redirect("list_appointments")

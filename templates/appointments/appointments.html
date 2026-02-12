@@ -41,12 +41,143 @@
     </div>
 </section>
 
+
+    <div class="container my-5">
+        {% if appointments %}
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="fw-bold mb-2">Mis Citas Agendadas</h2>
+                <p class="text-muted">Próximos turnos confirmados</p>
+            </div>
+        </div>
+
+        {% regroup appointments by start|date:"F Y" as appointments_by_month %}
+
+        <div class="accordion shadow-sm rounded-3 overflow-hidden" id="appointmentsAccordion">
+            {% for month in appointments_by_month %}
+            <div class="accordion-item border-0 border-bottom">
+                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %} fw-bold fs-5 bg-white text-dark py-3"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ forloop.counter }}"
+                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                            aria-controls="collapse{{ forloop.counter }}">
+                        <i class="bi bi-calendar-event me-2 text-primary"></i>
+                        {{ month.grouper|capfirst }}
+                    </button>
+                </h2>
+                <div id="collapse{{ forloop.counter }}"
+                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                     aria-labelledby="heading{{ forloop.counter }}"
+                     data-bs-parent="#appointmentsAccordion">
+                    <div class="accordion-body bg-light">
+                        <div class="row g-4 justify-content-center">
+                            {% for appt in month.list %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+                                    <div class="card-body position-relative p-4">
+                                        <!-- Decorative Header Line -->
+                                        <div class="position-absolute top-0 start-0 w-100" style="height: 5px; background: var(--primary-color);"></div>
+
+                                        <div class="d-flex align-items-center mb-4">
+                                            <!-- Date Box -->
+                                            <div class="rounded-3 text-center text-white p-2 me-3 shadow-sm d-flex flex-column justify-content-center"
+                                                 style="background-color: var(--secondary-color); min-width: 65px; height: 65px;">
+                                                <span class="d-block fw-bold h3 mb-0 lh-1">{{ appt.start|date:"d" }}</span>
+                                                <span class="small text-uppercase">{{ appt.start|date:"D"|slice:":3" }}</span>
+                                            </div>
+
+                                            <!-- Day & Time -->
+                                            <div>
+                                                <h5 class="card-title fw-bold mb-1 text-dark">{{ appt.patient }}</h5>
+                                                <p class="text-muted mb-0 small">
+                                                    <i class="bi bi-clock-fill me-1 text-warning"></i>
+                                                    {{ appt.start|time:"H:i" }} - {{ appt.end|time:"H:i" }} hs
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Contact Info (Simplified since we are in Patient View) -->
+                                         <div class="d-flex justify-content-between align-items-center">
+                                             <div class="d-flex align-items-center text-muted">
+                                                <i class="bi bi-envelope me-2 fs-5"></i>
+                                                <span class="small">Contacto</span>
+                                             </div>
+                                             <span class="fw-medium text-dark text-truncate" style="max-width: 140px;" title="{{ appt.email }}">{{ appt.email }}</span>
+                                        </div>
+
+                                        <div class="mt-4 pt-3 border-top">
+                                            <button class="btn btn-outline-danger w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal{{ appt.id }}">
+                                                <i class="bi bi-x-circle me-1"></i> Cancelar Cita
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Cancellation Modal moved outside card to prevent rendering issues -->
+                                <div class="modal fade" id="cancelModal{{ appt.id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ appt.id }}" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                      <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title" id="cancelModalLabel{{ appt.id }}">Confirmar Cancelación</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <p>¿Estás seguro que deseas cancelar tu cita para el <strong>{{ appt.start|date:"l d/m" }}</strong> a las <strong>{{ appt.start|time:"H:i" }}</strong>?</p>
+                                        <p class="text-muted small mb-0"><i class="bi bi-exclamation-triangle me-1"></i> Esta acción no se puede deshacer.</p>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mantener Cita</button>
+                                        <form action="{% url 'cancel_appointment' appt.id %}" method="POST" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">Sí, Cancelar</button>
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+
 <section class="section">
     <div class="container">
-        <!-- Google Calendar Appointment Scheduling begin -->
-        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ30tZ_ZPR0eEEQ-Lq-nsDtFWmYjLYL5dxSjvh_LM8r5P55Yo4yanUi7rP1jN0wYLV2hNevfmCYm?gv=true" style="border: 0" width="100%" height="600" frameborder="0"></iframe>
-        <script async type="module" src="https://embed.styledcalendar.com/assets/parent-window.js"></script>
-        <!-- end Google Calendar Appointment Scheduling -->
+        <div class="accordion shadow-lg rounded-3 overflow-hidden" id="bookingAccordion">
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="headingBooking">
+                    <button class="accordion-button fw-bold fs-4 bg-primary text-white py-3 shadow-none"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseBooking"
+                            aria-expanded="true"
+                            aria-controls="collapseBooking">
+                        <i class="bi bi-calendar-plus me-3"></i>
+                        Reservar un turno
+                    </button>
+                </h2>
+                <div id="collapseBooking"
+                     class="accordion-collapse collapse show"
+                     aria-labelledby="headingBooking"
+                     data-bs-parent="#bookingAccordion">
+                    <div class="accordion-body p-0">
+                        <!-- Google Calendar Appointment Scheduling begin -->
+                        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ30tZ_ZPR0eEEQ-Lq-nsDtFWmYjLYL5dxSjvh_LM8r5P55Yo4yanUi7rP1jN0wYLV2hNevfmCYm?gv=true&name={{ user_name|urlencode }}&email={{ user_email|urlencode }}" style="border: 0" width="100%" height="700" frameborder="0"></iframe>
+                        <script async type="module" src="https://embed.styledcalendar.com/assets/parent-window.js"></script>
+                        <!-- end Google Calendar Appointment Scheduling -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 

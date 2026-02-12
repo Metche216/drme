@@ -133,6 +133,24 @@
         color: white;
       }
 
+      /* Ensure logout button is visible when navbar is scrolled */
+      .navbar.scrolled .btn-outline-primary {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+      }
+
+      .navbar.scrolled .btn-outline-primary:hover {
+        background-color: #d7670b;
+        color: white;
+        border-color: #d7670b;
+      }
+
+      /* Greeting text visibility when scrolled */
+      .navbar.scrolled .text-white-50 {
+        color: rgba(33, 37, 41, 0.6) !important;
+      }
+
       .bi {
         color: var(
           --primary-color
