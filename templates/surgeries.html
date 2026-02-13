@@ -1,0 +1,439 @@
+{% extends 'base_nf.html' %}
+{% load static %}
+
+{% block title %}Cirugías y Procedimientos - Dr. Etcheverry{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Apple-like Design Customizations */
+    :root {
+        --bg-color: #f5f5f7;
+        --text-color: #1d1d1f;
+        --heading-color: #1d1d1f;
+        --link-color: #0066cc;
+        --card-bg: #ffffff;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    }
+
+    /* Hero Section */
+    .hero-surgery {
+        padding: 120px 0 80px;
+        background-color: #fff;
+        text-align: center;
+    }
+    .hero-surgery h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        margin-bottom: 20px;
+        color: var(--heading-color);
+    }
+    .hero-surgery p {
+        font-size: 1.5rem;
+        color: #86868b;
+        max-width: 700px;
+        margin: 0 auto;
+        font-weight: 400;
+    }
+
+    /* Sticky Navigation */
+    .sticky-nav {
+        position: sticky;
+        top: 76px; /* Adjust based on main navbar height */
+        z-index: 900;
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding: 15px 0;
+        transition: top 0.3s;
+    }
+    .sticky-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+    }
+    .sticky-nav a {
+        color: #1d1d1f;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    .sticky-nav a:hover, .sticky-nav a.active {
+        opacity: 1;
+        color: var(--primary-color);
+    }
+
+    /* Content Sections */
+    .surgery-section {
+        padding: 100px 0;
+    }
+    .bg-white-section {
+        background-color: #fff;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        letter-spacing: -0.01em;
+    }
+    .section-subtitle {
+        font-size: 1.25rem;
+        color: #86868b;
+        margin-bottom: 40px;
+        font-weight: 400;
+    }
+
+    /* Images */
+    .surgery-img {
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .surgery-section:hover .surgery-img {
+        transform: scale(1.02);
+    }
+
+    /* Apple-style Accordion */
+    .apple-accordion .accordion-item {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #d2d2d7;
+    }
+    .apple-accordion .accordion-button {
+        background: transparent;
+        box-shadow: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        padding: 20px 0;
+    }
+    .apple-accordion .accordion-button:not(.collapsed) {
+        color: var(--primary-color);
+        background: transparent;
+    }
+    .apple-accordion .accordion-button::after {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236e6e73'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    }
+    .apple-accordion .accordion-body {
+        padding: 0 0 25px 0;
+        color: #6e6e73;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+
+    /* Fade In Animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Navbar Visibility Fix for White Background */
+    .navbar:not(.scrolled) .nav-link {
+        color: var(--primary-color) !important;
+        font-weight: 500;
+    }
+    .navbar:not(.scrolled) .nav-link:hover {
+        opacity: 0.8;
+    }
+    .navbar:not(.scrolled) .navbar-toggler {
+        background-color: rgba(253, 169, 13, 0.1);
+        border-color: var(--primary-color);
+    }
+    .navbar:not(.scrolled) .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(253, 169, 13, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero-surgery fade-in">
+    <div class="container">
+        <h1>Cirugía de Alta Especialidad</h1>
+        <p>Tecnología avanzada y experiencia clínica para restaurar su salud.</p>
+    </div>
+</section>
+
+<!-- Sticky Sub-Nav -->
+<nav class="sticky-nav">
+    <div class="container">
+        <ul>
+            <li><a href="#oido" class="nav-link-smooth">Oído</a></li>
+            <li><a href="#nariz" class="nav-link-smooth">Nariz</a></li>
+            <li><a href="#faringe" class="nav-link-smooth">Faringe</a></li>
+            <li><a href="#laringe" class="nav-link-smooth">Laringe</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Oído Section -->
+<section id="oido" class="surgery-section bg-white-section fade-in">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 ps-lg-5">
+                <h2 class="section-title">Oído</h2>
+                <p class="section-subtitle"> Cirugía microscópica y endoscópica</p>
+                <div class="accordion apple-accordion" id="earAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEar1">
+                                Perforaciones Timpánicas
+                            </button>
+                        </h2>
+                        <div id="collapseEar1" class="accordion-collapse collapse" data-bs-parent="#earAccordion">
+                            <div class="accordion-body">
+                                Cierre de perforaciónes pequeñas, medianas y totales de la membrana timpanica con o sin reconstrucción de la cadena de huesecillos. Autoinjertos de fascia o cartílago.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEar2">
+                                Colesteatoma y cirugía de otitis media crónica
+                            </button>
+                        </h2>
+                        <div id="collapseEar2" class="accordion-collapse collapse" data-bs-parent="#earAccordion">
+                            <div class="accordion-body">
+                                Resección de pseudotumores de oído medio y mastoides. Cirugía de atelectasia y bolsillos de retracción timpánica o epitimpánica. Reconstrucción osicular con autoinjertos o con prótesis de oído medio.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEar3">
+                                Implantes
+                            </button>
+                        </h2>
+                        <div id="collapseEar3" class="accordion-collapse collapse" data-bs-parent="#earAccordion">
+                            <div class="accordion-body">
+                                Implantes cocleares y de conducción ósea para hipoacusias neurosensoriales y conductivas severas a profundas.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cirugía de Oído" class="img-fluid surgery-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Nariz Section -->
+<section id="nariz" class="surgery-section fade-in">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 pe-lg-5">
+                <h2 class="section-title">Nariz y Senos Paranasales</h2>
+                <p class="section-subtitle">Cirugía funcional nasal y endoscópica</p>
+                <div class="accordion apple-accordion" id="noseAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNose1">
+                                Desvío de tabique e insuficiencia nasal
+                            </button>
+                        </h2>
+                        <div id="collapseNose1" class="accordion-collapse collapse" data-bs-parent="#noseAccordion">
+                            <div class="accordion-body">
+                                Diagnóstico eficiente y resolución quirúrgica de la obstrucción nasal por desviación septal y/o hipertrofia de cornetes. Permeabilización nasal y tratamiento de la obstrucción cronica uni o bilateral.
+                            </div>
+                        </div>
+                    </div>
+                     <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNose2">
+                                Cirugía Endoscópica Naso Sinusal (CENS)
+                            </button>
+                        </h2>
+                        <div id="collapseNose2" class="accordion-collapse collapse" data-bs-parent="#noseAccordion">
+                            <div class="accordion-body">
+                                Tratamiento de sinusitis crónica y poliposis nasal mediante técnica endoscópica a través de orificios naturales, sin incisiones y con recuperación ambulatoria.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNose3">
+                                Base de Cráneo y Tumores
+                            </button>
+                        </h2>
+                        <div id="collapseNose3" class="accordion-collapse collapse" data-bs-parent="#noseAccordion">
+                            <div class="accordion-body">
+                                Abordaje de tumores de la nariz y senos para nasales mediante técnica endoscópica. Abordajes trans-nasales para neurocirugía y tratamiento endonasal de fístulas de líquido cefalorraquídeo y su causa.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cirugía de Nariz" class="img-fluid surgery-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Faringe Section -->
+<section id="faringe" class="surgery-section bg-white-section fade-in">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2 ps-lg-5">
+                <h2 class="section-title">Faringe</h2>
+                <p class="section-subtitle">Soluciones para el ronquido, apnea y patología amigdalina.</p>
+                <div class="accordion apple-accordion" id="pharynxAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePharynx1">
+                                Amigdalectomía
+                            </button>
+                        </h2>
+                        <div id="collapsePharynx1" class="accordion-collapse collapse" data-bs-parent="#pharynxAccordion">
+                            <div class="accordion-body">
+                                Intervención para casos de amigdalitis recurrentes o hipertrofia severa que causa apnea, utilizando técnicas que minimizan el dolor postoperatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePharynx2">
+                                Cirugía de Ronquidos y Apnea
+                            </button>
+                        </h2>
+                        <div id="collapsePharynx2" class="accordion-collapse collapse" data-bs-parent="#pharynxAccordion">
+                            <div class="accordion-body">
+                                Cirugía multinivel del paladar y vía aérea superior para tratar el ronquido severo y la apnea obstructiva del sueño (SAOS).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-6 order-lg-1">
+                <img src="https://plus.unsplash.com/premium_photo-1661766579344-9646b9777970?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Cirugía de Faringe" class="img-fluid surgery-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Laringe Section -->
+<section id="laringe" class="surgery-section fade-in">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 pe-lg-5">
+                <h2 class="section-title">Laringe y Voz</h2>
+                <p class="section-subtitle">Recuperación de la voz mediante microcirugía láser y fonocirugía.</p>
+                <div class="accordion apple-accordion" id="larynxAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLarynx1">
+                                Microcirugía de Laringe
+                            </button>
+                        </h2>
+                        <div id="collapseLarynx1" class="accordion-collapse collapse" data-bs-parent="#larynxAccordion">
+                            <div class="accordion-body">
+                                Extirpación precisa de pólipos, nódulos y quistes de las cuerdas vocales bajo microscopio, preservando la delicada mucosa vocal.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLarynx2">
+                                Parálisis Vocal
+                            </button>
+                        </h2>
+                        <div id="collapseLarynx2" class="accordion-collapse collapse" data-bs-parent="#larynxAccordion">
+                            <div class="accordion-body">
+                                Procedimientos de tiroplastia y medialización para restaurar la fuerza y calidad de la voz en pacientes con parálisis de cuerda vocal.
+                            </div>
+                        </div>
+                    </div>
+                     <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLarynx3">
+                                Biopsias y Diagnóstico
+                            </button>
+                        </h2>
+                        <div id="collapseLarynx3" class="accordion-collapse collapse" data-bs-parent="#larynxAccordion">
+                            <div class="accordion-body">
+                                Diagnóstico temprano y toma de muestras de lesiones sospechosas o premalignas en la laringe.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cirugía de Laringe" class="img-fluid surgery-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-white text-center border-top">
+    <div class="container py-5">
+        <h2 class="fw-bold mb-3 display-5">Su salud es nuestra prioridad</h2>
+        <p class="lead text-muted mb-4 mx-auto" style="max-width: 600px;">Agende una consulta hoy mismo para discutir sus opciones de tratamiento.</p>
+        <a href="{% url 'list_appointments' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-sm">
+            Reservar Turno
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll(".fade-in").forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Sticky Nav Active State
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".sticky-nav a");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 150) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current) && current !== "") {
+                    link.classList.add("active");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

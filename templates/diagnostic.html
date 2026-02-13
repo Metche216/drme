@@ -1,0 +1,296 @@
+{% extends 'base_nf.html' %}
+{% load static %}
+
+{% block title %}Certeza Diagnóstica - Dr. Etcheverry{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Apple-like Design Customizations (Shared with Surgeries) */
+    :root {
+        --bg-color: #f5f5f7;
+        --text-color: #1d1d1f;
+        --heading-color: #1d1d1f;
+        --link-color: #0066cc;
+        --card-bg: #ffffff;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    }
+
+    /* Hero Section */
+    .hero-diagnostic {
+        padding: 140px 0 100px;
+        background-color: #fff;
+        text-align: center;
+        overflow: hidden;
+    }
+    .hero-diagnostic h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        margin-bottom: 25px;
+        color: var(--heading-color);
+        background: -webkit-linear-gradient(#1d1d1f, #434344);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding-bottom: 10px; /* Fix for descenders being cut off */
+        line-height: 1.3;
+    }
+    .hero-diagnostic p {
+        font-size: 1.8rem;
+        color: #86868b;
+        max-width: 800px;
+        margin: 0 auto;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    /* Content Sections */
+    .diagnostic-section {
+        padding: 100px 0;
+    }
+    .bg-white-section {
+        background-color: #fff;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        letter-spacing: -0.01em;
+    }
+    .text-body-large {
+        font-size: 1.25rem;
+        color: #6e6e73;
+        line-height: 1.6;
+    }
+
+    /* Features Grid */
+    .feature-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        height: 100%;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        display: inline-block;
+    }
+    .feature-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-color);
+    }
+    .feature-text {
+        font-size: 1rem;
+        color: #86868b;
+        margin-bottom: 0;
+    }
+
+    /* Fade In Animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+
+    /* Navbar Visibility Fix for White Background */
+    .navbar:not(.scrolled) .nav-link {
+        color: var(--primary-color) !important;
+        font-weight: 500;
+    }
+    .navbar:not(.scrolled) .nav-link:hover {
+        opacity: 0.8;
+    }
+    .navbar:not(.scrolled) .navbar-toggler {
+        background-color: rgba(253, 169, 13, 0.1);
+        border-color: var(--primary-color);
+    }
+    .navbar:not(.scrolled) .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(253, 169, 13, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero-diagnostic fade-in">
+    <div class="container">
+        <h1>Certeza Diagnóstica</h1>
+        <p>"Cuanto más acertado es el diagnóstico... más efectivo será el tratamiento."</p>
+    </div>
+</section>
+
+<!-- Introduction / Philosophy -->
+<!-- Introduction / Philosophy -->
+<section class="diagnostic-section fade-in p-0 overflow-hidden">
+    <div class="row g-0 align-items-stretch">
+        <div class="col-lg-6 p-5 d-flex flex-column justify-content-center order-lg-1 bg-white">
+            <div class="p-lg-4">
+                <i class="bi bi-bullseye text-primary display-4 mb-4 d-block"></i>
+                <h2 class="section-title">La diferencia entre aliviar y curar</h2>
+                <p class="text-body-large mb-0">
+                    En la medicina moderna, a menudo nos apresuramos a tratar los síntomas. Mi enfoque es diferente: invierto el tiempo y utilizo la tecnología necesaria para encontrar la <strong>causa raíz</strong> de su problema. Solo con un diagnóstico preciso podemos diseñar un plan de tratamiento que realmente funcione.
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6 order-lg-2 m-0 p-0">
+             <div class="bg-light h-100 d-flex align-items-center justify-content-center text-muted" style="min-height: 500px; background-color: #f5f5f7;">
+                <!-- Placeholder for Doctor/Patient image -->
+                <div class="text-center p-5">
+                     <i class="bi bi-image fs-1 mb-3 d-block"></i>
+                     <span>Imagen: Doctor hablando con paciente (Full Height)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Grid -->
+<section class="diagnostic-section bg-white-section">
+    <div class="container">
+        <div class="text-center mb-5 fade-in">
+            <h2 class="section-title">Tecnología en el Consultorio</h2>
+            <p class="text-body-large text-muted">Equipamiento de última generación para una evaluación completa.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 fade-in stagger-1">
+                <div class="feature-card">
+                    <i class="bi bi-eye feature-icon"></i>
+                    <h3 class="feature-title">Microscopio Quirúrgico</h3>
+                    <p class="feature-text">Visualización de alta precisión para patologías de oído y laringe, permitiendo detalles invisibles a simple vista.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 fade-in stagger-2">
+                <div class="feature-card">
+                    <i class="bi bi-camera-video feature-icon"></i>
+                    <h3 class="feature-title">Rinofibrolaringoscopio</h3>
+                    <p class="feature-text">Exploración flexible y detallada de la vía aérea superior: nariz, faringe y laringe, con mínima molestia.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 fade-in stagger-3">
+                <div class="feature-card">
+                    <i class="bi bi-hdd-network feature-icon"></i>
+                    <h3 class="feature-title">Endoscopía HD</h3>
+                    <p class="feature-text">Sistemas de alta definición para evaluaciones otoscópicas y nasales con registro de imágenes.</p>
+                </div>
+            </div>
+             <div class="col-md-6 col-lg-6 fade-in stagger-1">
+                <div class="feature-card text-center">
+                     <i class="bi bi-activity feature-icon"></i>
+                    <h3 class="feature-title">Cauterización Bipolar/Monopolar</h3>
+                    <p class="feature-text">Tratamiento ambulatorio preciso y seguro para epistaxis (sangrado nasal) y pequeñas lesiones.</p>
+                </div>
+            </div>
+             <div class="col-md-6 col-lg-6 fade-in stagger-2">
+                <div class="feature-card text-center">
+                     <i class="bi bi-display feature-icon"></i>
+                    <h3 class="feature-title">Sistema de Video Integrado</h3>
+                    <p class="feature-text">Para que usted vea lo que nosotros vemos.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Patient Empowerment -->
+<section class="diagnostic-section fade-in p-0 overflow-hidden">
+    <div class="row g-0 align-items-stretch">
+        <div class="col-lg-6 order-lg-1 m-0 p-0">
+             <div class="h-100 position-relative" style="min-height: 500px;">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Doctor explicando diagnóstico" class="img-fluid w-100 h-100" style="object-fit: cover; position: absolute; top:0; left:0;">
+            </div>
+        </div>
+        <div class="col-lg-6 p-5 d-flex flex-column justify-content-center order-lg-2 bg-white">
+            <div class="p-lg-4">
+                <h2 class="section-title">Ver para Entender</h2>
+                <div class="d-flex mb-4">
+                    <div class="me-3">
+                        <i class="bi bi-translate text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-2">Traducción Médica</h4>
+                        <p class="text-muted">No uso jerga complicada. Traduzco la información médica a un lenguaje que usted pueda comprender perfectamente.</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-4">
+                     <div class="me-3">
+                        <i class="bi bi-person-check text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-2">Decisiones Compartidas</h4>
+                        <p class="text-muted">Usted es el protagonista de su salud. Le doy la información y las herramientas para que tomemos las mejores decisiones juntos.</p>
+                    </div>
+                </div>
+                 <div class="d-flex">
+                     <div class="me-3">
+                        <i class="bi bi-file-medical text-primary fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-2">Transparencia Total</h4>
+                        <p class="text-muted">Gracias a nuestras pantallas, usted verá su propia patología. Creemos que entender el problema es el primer paso para sanarlo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-white text-center border-top">
+    <div class="container py-5">
+        <h2 class="fw-bold mb-3 display-5">Un diagnóstico preciso le espera</h2>
+        <p class="lead text-muted mb-4 mx-auto" style="max-width: 600px;">No deje su salud al azar. Agende una consulta con tecnología de punta.</p>
+        <a href="{% url 'list_appointments' %}" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-sm">
+            Reservar Consulta
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll(".fade-in").forEach((el) => {
+            observer.observe(el);
+        });
+    });
+</script>
+{% endblock %}

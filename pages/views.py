@@ -26,6 +26,38 @@ def index(request):
         },
     )
 
+def surgeries(request):
+    try:
+        user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
+        local_login(request, user)
+    except (KeyError, AttributeError):
+        user = None
+
+    return render(
+        request,
+        "surgeries.html",
+        context={
+            "session": request.session.get("user"),
+            "user": user,
+        },
+    )
+
+def diagnostic(request):
+    try:
+        user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
+        local_login(request, user)
+    except (KeyError, AttributeError):
+        user = None
+
+    return render(
+        request,
+        "diagnostic.html",
+        context={
+            "session": request.session.get("user"),
+            "user": user,
+        },
+    )
+
 # Auth0
 oauth = OAuth()
 

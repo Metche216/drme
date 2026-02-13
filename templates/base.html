@@ -96,7 +96,9 @@
       }
 
       .card:hover {
-        transform: translateY(-5px);
+        /* transform: translateY(-5px); Removed motion as requested */
+        background-color: #f8f9fa; /* Subtle fade effect */
+        border-color: rgba(0,0,0,0.05);
       }
 
       .btn-primary {
@@ -240,7 +242,7 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-8 text-center">
-            <iframe src="https://embeds.beehiiv.com/3b2f2cb9-c792-4dc8-bda0-644d4f2e723d?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent;"></iframe>
+            <iframe src="https://embeds.beehiiv.com/3b2f2cb9-c792-4dc8-bda0-644d4f2e723d?slim=true" data-test-id="beehiiv-embed" height="52" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent; width: 100%; position: relative; z-index: 10;"></iframe>
           </div>
         </div>
       </div>
