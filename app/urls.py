@@ -12,5 +12,7 @@ urlpatterns = [
     path("logout", views.logout, name="logout"),
     path("callback", views.callback, name="callback"),
     path('turnos/', include('appointments.urls')),
-
+    path('testimonios/', views.testimonials, name='testimonials'),
+    path('mod/testimonios/', views.moderator_dashboard, name='moderator_dashboard'),
+    path('mod/testimonios/<int:pk>/approve/', views.approve_testimonial, name='approve_testimonial'),
 ]

@@ -140,6 +140,8 @@ LANGUAGES = [
 # CUSTOM USER MODEL
 AUTH_USER_MODEL = 'core.User'
 
+LOGIN_URL = 'login'
+
 # AUTH0 Configuration
 
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")

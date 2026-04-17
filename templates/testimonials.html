@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Testimonios - Dr. MediCare{% endblock %}
+
+{% block content %}
+<section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static "images/hero-bg.jpg" %}'); background-size: cover; background-position: center;">
+    <div class="container text-center text-white py-5">
+        <h1 class="display-4 fw-bold">Testimonios de Pacientes</h1>
+        <p class="lead">Lo que dicen nuestros pacientes sobre nosotros</p>
+    </div>
+</section>
+
+<section class="section py-5">
+    <div class="container">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row mb-5">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4 mb-4">
+                <div class="card testimonial-card h-100 shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    {{ testimonial.name|slice:":1"|upper }}
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">{{ testimonial.name }}</h5>
+                                    <small class="text-muted">{{ testimonial.date|date:"F Y" }}</small>
+                                </div>
+                            </div>
+                            <div class="text-warning">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="bi bi-star-fill"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="card-text fst-italic">"{{ testimonial.content }}"</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>Aún no hay testimonios publicados. ¡Sé el primero en dejarnos tu opinión!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <hr class="my-5">
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow border-0">
+                    <div class="card-body p-5">
+                        <h3 class="text-center mb-4">Déjanos tu Testimonio</h3>
+                        
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'testimonials' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.name.label }}</label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.rating.label }}</label>
+                                    {{ form.rating }}
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">{{ form.content.label }}</label>
+                                    {{ form.content }}
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">Enviar Testimonio</button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="bi bi-lock text-muted mb-3" style="font-size: 3rem;"></i>
+                                <h4 class="mb-3">Inicia sesión para participar</h4>
+                                <p class="text-muted mb-4">Necesitas estar registrado e iniciar sesión para poder dejar un testimonio de tu experiencia.</p>
+                                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-5">Iniciar Sesión</a>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel de Moderación - Dr. MediCare{% endblock %}
+{% block always_scrolled %}true{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-shield-lock text-primary me-2"></i>Panel de Moderación de Testimonios</h2>
+    </div>
+
+    <!-- PENDING TESTIMONIALS -->
+    <div class="card shadow-sm mb-5 border-warning border-top border-3">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 text-warning"><i class="bi bi-hourglass-split me-2"></i>Pendientes de Aprobación ({{ pending_testimonials.count }})</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Paciente</th>
+                            <th>Calificación</th>
+                            <th style="width: 40%;">Mensaje</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in pending_testimonials %}
+                        <tr>
+                            <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
+                            <td>
+                                <strong>{{ t.name }}</strong><br>
+                                <small class="text-muted">{{ t.user.email|default:"Sin email" }}</small>
+                            </td>
+                            <td class="text-warning">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= t.rating %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}
+                                {% endfor %}
+                            </td>
+                            <td><span class="text-truncate d-inline-block" style="max-width: 300px;" title="{{ t.content }}">"{{ t.content }}"</span></td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'approve_testimonial' t.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-circle me-1"></i>Aprobar</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No hay testimonios pendientes de aprobación.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPROVED TESTIMONIALS -->
+    <div class="card shadow-sm border-success border-top border-3">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 text-success"><i class="bi bi-check-circle-fill me-2"></i>Testimonios Publicados ({{ approved_testimonials.count }})</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Paciente</th>
+                            <th>Calificación</th>
+                            <th style="width: 40%;">Mensaje</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in approved_testimonials %}
+                        <tr>
+                            <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
+                            <td>
+                                <strong>{{ t.name }}</strong><br>
+                                <small class="text-muted">{{ t.user.email|default:"Sin email" }}</small>
+                            </td>
+                            <td class="text-warning">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= t.rating %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}
+                                {% endfor %}
+                            </td>
+                            <td><span class="text-truncate d-inline-block" style="max-width: 300px;" title="{{ t.content }}">"{{ t.content }}"</span></td>
+                            <td class="text-end">
+                                <form method="post" action="{% url 'approve_testimonial' t.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas ocultar este testimonio?');">
+                                        <i class="bi bi-eye-slash me-1"></i>Ocultar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No hay testimonios publicados actualmente.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

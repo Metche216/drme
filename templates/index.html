@@ -135,75 +135,39 @@
             <p class="lead text-muted">Lo que dicen nuestros pacientes sobre nosotros</p>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card testimonial-card h-100">
-                    <div class="card-body">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4 mb-4">
+                <div class="card testimonial-card h-100 shadow-sm border-0">
+                    <div class="card-body p-4">
                         <div class="d-flex justify-content-between mb-3">
                             <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                    {{ testimonial.name|slice:":1"|upper }}
+                                </div>
                                 <div>
-                                    <h5 class="mb-0">Sara Jiménez</h5>
-                                    <small class="text-muted">Paciente por 5 años</small>
+                                    <h5 class="mb-0">{{ testimonial.name }}</h5>
+                                    <small class="text-muted">{{ testimonial.date|date:"F Y" }}</small>
                                 </div>
                             </div>
                             <div class="text-warning">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= testimonial.rating %}
+                                        <i class="bi bi-star-fill"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
-                        <p class="card-text">"La Dra. Martínez ha sido mi médica familiar durante 5 años. Es atenta, conocedora y realmente se preocupa por sus pacientes. La recomiendo ampliamente."</p>
+                        <p class="card-text fst-italic">"{{ testimonial.content }}"</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card testimonial-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
-                                <div>
-                                    <h5 class="mb-0">Miguel Moreno</h5>
-                                    <small class="text-muted">Paciente por 3 años</small>
-                                </div>
-                            </div>
-                            <div class="text-warning">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                            </div>
-                        </div>
-                        <p class="card-text">"El personal es amable y profesional. La Dra. Martínez se toma el tiempo para escuchar mis preocupaciones y explica todo claramente. ¡El mejor consultorio médico de la ciudad!"</p>
-                    </div>
-                </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted">
+                <p>Aún no hay testimonios publicados. ¡Sé el primero en dejarnos tu opinión!</p>
             </div>
-            <div class="col-md-4">
-                <div class="card testimonial-card h-100">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="d-flex align-items-center">
-                                <img src="https://placeholder.svg?height=50&width=50" alt="Paciente" class="rounded-circle me-3" width="50" height="50">
-                                <div>
-                                    <h5 class="mb-0">Elena Díaz</h5>
-                                    <small class="text-muted">Paciente por 2 años</small>
-                                </div>
-                            </div>
-                            <div class="text-warning">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                            </div>
-                        </div>
-                        <p class="card-text">"Aprecio los tiempos de espera mínimos y cómo la Dra. Martínez siempre hace seguimiento después de las citas. Realmente se preocupa por el bienestar de sus pacientes."</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
         <div class="text-center mt-4">
             <a href="/testimonios/" class="btn btn-outline-primary">Leer Más Testimonios</a>

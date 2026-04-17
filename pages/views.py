@@ -6,7 +6,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from urllib.parse import quote_plus, urlencode
 
-from core.models import User
+from core.models import User, Testimonio
+from .forms import TestimonioForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
 
 
 def index(request):
@@ -16,6 +21,8 @@ def index(request):
     except KeyError:
         user = None
 
+    testimonials_list = Testimonio.objects.filter(published=True).select_related('user').order_by('-created_at')[:3]
+
     return render(
         request,
         "index.html",
@@ -23,6 +30,7 @@ def index(request):
             "session": request.session.get("user"),
             "pretty": json.dumps(request.session.get("user"), indent=4),
             "user": user,
+            "testimonials": testimonials_list,
         },
     )
 
@@ -57,6 +65,69 @@ def diagnostic(request):
             "user": user,
         },
     )
+
+def testimonials(request):
+    try:
+        user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
+        local_login(request, user)
+    except (KeyError, AttributeError):
+        user = None
+
+    if request.method == 'POST':
+        if not user:
+            messages.error(request, 'You must be logged in to leave a testimonial.')
+            return redirect('login')
+        form = TestimonioForm(request.POST)
+        if form.is_valid():
+            testimonial = form.save(commit=False)
+            testimonial.user = user
+            testimonial.save()
+            messages.success(request, 'Su testimonio ha sido enviado y está pendiente de aprobación.')
+            return redirect('testimonials')
+    else:
+        initial_data = {'name': user.get_full_name() or user.username} if user else {}
+        form = TestimonioForm(initial=initial_data)
+
+    testimonials_list = Testimonio.objects.filter(published=True).select_related('user').order_by('-created_at')
+    
+    return render(
+        request,
+        "testimonials.html",
+        context={
+            "session": request.session.get("user") if hasattr(request, 'session') else None,
+            "user": user,
+            "testimonials": testimonials_list,
+            "form": form,
+        },
+    )
+
+def is_moderator(user):
+    return user.is_authenticated and (user.is_staff or user.is_superuser)
+
+@user_passes_test(is_moderator)
+def moderator_dashboard(request):
+    pending_testimonials = Testimonio.objects.filter(published=False).order_by('-created_at')
+    approved_testimonials = Testimonio.objects.filter(published=True).order_by('-created_at')
+    
+    return render(
+        request,
+        "moderator_dashboard.html",
+        context={
+            "pending_testimonials": pending_testimonials,
+            "approved_testimonials": approved_testimonials,
+            "user": request.user,
+        },
+    )
+
+@require_POST
+@user_passes_test(is_moderator)
+def approve_testimonial(request, pk):
+    testimonial = get_object_or_404(Testimonio, pk=pk)
+    testimonial.published = not testimonial.published # toggle state
+    testimonial.save()
+    status = "aprobado" if testimonial.published else "ocultado"
+    messages.success(request, f'Testimonio de {testimonial.name} fue {status}.')
+    return redirect('moderator_dashboard')
 
 # Auth0
 oauth = OAuth()

@@ -22,14 +22,16 @@ class User(AbstractUser):
             self.save()
 class Testimonio(models.Model):
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
     content = models.TextField()
-    date = models.DateField()
+    rating = models.IntegerField(default=5)
+    date = models.DateField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     published = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'Testimonio de {self.nombre}'
+        return f'Testimonio de {self.name}'
 
 
 class Appointment(models.Model):
