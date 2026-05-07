@@ -39,7 +39,7 @@ class Appointment(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     patient = models.CharField(max_length=100)
-    cellphone = models.CharField(max_length=20)
+    cellphone = models.CharField(max_length=20, blank=True, default='')
     email = models.EmailField()
     created_at = models.DateTimeField(auto_now_add=True)
     google_event_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
@@ -49,3 +49,22 @@ class Appointment(models.Model):
         return f'Appointment with {self.patient} on {self.start}'
 
 
+class PatientProfile(models.Model):
+    """
+    Stores the patient's confirmed personal data for online booking.
+    Keyed by email (from Auth0 session) — works with any Auth0 login method.
+    Created the first time a user completes the profile form before booking.
+    """
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=20, blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name} <{self.email}>'
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'.strip()
