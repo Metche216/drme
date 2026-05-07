@@ -1,183 +1,218 @@
-from datetime import datetime, timedelta
-from google.oauth2.service_account import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+import requests
+from datetime import datetime
 from decouple import config
 from core.models import Appointment, User
-import re
+import logging
 
-SCOPES = ["https://www.googleapis.com/auth/calendar"]
+logger = logging.getLogger(__name__)
 
-def fetch_appointments():
-    """
-    Fetches events from Google Calendar and syncs them to the local database.
-    Returns a list of synced Appointment objects.
-    """
-    print("Fetching appointments from Google Calendar...")
+def get_emr_headers():
+    # Fetch a new token every time to avoid expiration issues
+    base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+    username = config('EMR_API_USERNAME', default='drme_website')
+    password = config('EMR_API_PASSWORD', default='SecureAPI_Password!123')
+    
     try:
-        # Load the service account file path from the .env file
-        service_account_file = config("GOOGLE_SERVICE_ACCOUNT_FILE")
-        creds = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
+        resp = requests.post(f"{base_url}/token/", json={
+            "username": username,
+            "password": password
+        })
+        resp.raise_for_status()
+        token = resp.json()['access']
+        return {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'
+        }
+    except Exception as e:
+        logger.error(f"Failed to fetch EMR auth token: {e}")
+        return {'Content-Type': 'application/json'}
 
-        # Build the Google Calendar API service
-        service = build("calendar", "v3", credentials=creds)
-
-        time_min = datetime.utcnow().isoformat() + 'Z'  # now
-        time_max = (datetime.utcnow() + timedelta(days=90)).isoformat() + 'Z' # 3 months out
-
-        print(f"Time Range: {time_min} to {time_max}")
-        log_debug(f"Fetching appointments from GCal. Range: {time_min} to {time_max}")
-
-        events_result = service.events().list(
-            calendarId="drmatiasetcheverry@gmail.com",
-            timeMin=time_min,
-            timeMax=time_max,
-            maxResults=50,
-            singleEvents=True,
-            orderBy="startTime",
-        ).execute()
-
-        events = events_result.get("items", [])
-        print(f"Found {len(events)} events.")
-        log_debug(f"Found {len(events)} events in GCal.")
-
-        if not events:
-            # Debug: Print the raw result to see if anything else came back
-            print(f"Raw Result Keys: {events_result.keys()}")
-            print("No upcoming events found.")
-            return []
-
+def fetch_appointments(user_email):
+    """
+    Fetches appointments from the EMR API for the given user.
+    Syncs them to the local database to use the existing DrME models.
+    """
+    base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+    
+    # In the EMR, we enabled filtering by patient__email
+    url = f"{base_url}/appointments/?patient__email={user_email}"
+    
+    try:
+        response = requests.get(url, headers=get_emr_headers())
+        response.raise_for_status()
+        events = response.json()
+        
         synced_appointments = []
-
+        user = User.objects.filter(email=user_email).first()
+        
         for event in events:
-            # GCal Booking slots usually have the user as an attendee or in the description
-            # But the most reliable way for GCal Appointment Scheduling is checking attendees
-            attendees = event.get('attendees', [])
-
-            # Find the attendee that is NOT the organizer (the doctor)
-            patient_email = None
-            patient_name = "Unknown"
-
-            for attendee in attendees:
-                if attendee.get('email') != "drmatiasetcheverry@gmail.com":
-                    patient_email = attendee.get('email')
-                    patient_name = attendee.get('displayName', patient_email.split('@')[0])
-                    break
-
-            # Fallback: check description for email (GCal Appointment Slots often put it there)
-            if not patient_email and event.get('description'):
-                description = event.get('description')
-                # Try to find email pattern in description
-                # Adjusted regex to be a bit more permissible for GCal's formatting
-                # Find ALL matches, not just the first one
-                email_matches = re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', description)
-
-                for email in email_matches:
-                    if email.lower() != "drmatiasetcheverry@gmail.com":
-                        patient_email = email
-                        break
-
-                if patient_email:
-                    # Try to extract name? Usually "Reservada por [Name]"
-                    # Spanish: "Reservada por" -> Reserved by
-                    name_match = re.search(r'Reservada por\s+(.*?)(?:<br>|\n|$)', description)
-                    if name_match:
-                         # Remove HTML tags if present
-                        raw_name = name_match.group(1)
-                        patient_name = re.sub(r'<[^>]+>', '', raw_name).strip()
-                    else:
-                        # Fallback for name if we have email
-                        patient_name = patient_email.split('@')[0]
-
-            if not patient_email:
-                print("  No patient email found in attendees or description. Skipping.")
-                log_debug(f"Skipping event {event['id']}: No patient email found.")
-                continue
-
-            start = event["start"].get("dateTime")
-            end = event["end"].get("dateTime")
-            event_id = event["id"]
-
-            # Try to find user by email
-            user = User.objects.filter(email=patient_email).first()
-
-            log_debug(f"Syncing event {event_id}. Patient: {patient_email}. User found? {user is not None}")
-
-            appointment, created = Appointment.objects.update_or_create(
-                google_event_id=event_id,
+            # The EMR returns 'date', 'start_time', 'end_time'
+            start_dt_str = f"{event['date']}T{event['start_time']}"
+            end_dt_str = f"{event['date']}T{event['end_time']}"
+            
+            # We repurpose google_event_id to store the EMR Appointment ID
+            appt, created = Appointment.objects.update_or_create(
+                google_event_id=str(event['id']),
                 defaults={
-                    "start": start,
-                    "end": end,
-                    "patient": patient_name,
-                    "email": patient_email,
-                    "cellphone": "",
+                    "start": datetime.fromisoformat(start_dt_str),
+                    "end": datetime.fromisoformat(end_dt_str),
+                    "patient": event.get('patient_name', 'Unknown'),
+                    "email": user_email,
                     "user": user
                 }
             )
-
-            if created:
-                print(f"Created/Synced appointment for {patient_email}")
-                log_debug(f"Created new appointment for {patient_email}")
-
-            synced_appointments.append(appointment)
-
+            
+            # Update status if cancelled in EMR so we don't show it here
+            if event.get('status') == 'CANCELLED':
+                 appt.delete()
+            else:
+                 synced_appointments.append(appt)
+            
         return synced_appointments
-
-    except HttpError as error:
-        print(f"An error occurred: {error}")
-        log_debug(f"HttpError in fetch_appointments: {error}")
+    except Exception as e:
+        logger.error(f"Error fetching from EMR: {e}")
         return []
 
-def log_debug(message):
-    try:
-         with open("d:\\Programming\\DrME\\debug.log", "a") as f:
-            f.write(f"SERVICE {datetime.now()}: {message}\n")
-    except Exception as e:
-        print(f"Logging failed: {e}")
-
 def cancel_appointment_service(appointment_id):
-    log_debug(f"Attempting to cancel appointment {appointment_id}")
     """
-    Cancels an appointment by deleting it from Google Calendar and the local database.
-    Returns True if successful, False otherwise.
+    Cancels an appointment by pinging the EMR API and deleting locally.
     """
     try:
-        appointment = Appointment.objects.get(id=appointment_id)
-        google_event_id = appointment.google_event_id
+        local_appt = Appointment.objects.get(id=appointment_id)
+        emr_id = local_appt.google_event_id
+        
+        if emr_id:
+            base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+            url = f"{base_url}/appointments/{emr_id}/cancel/"
+            response = requests.post(url, headers=get_emr_headers())
+            
+            # If 400 or 404, it might already be cancelled or not exist, we proceed to delete locally
+            if response.status_code not in [200, 204, 400, 404]:
+                logger.error(f"Error cancelling in EMR: HTTP {response.status_code}")
+                return False
+                
+        # Delete from local DB so it disappears from the DrME UI
+        local_appt.delete()
+        return True
+        
+    except Appointment.DoesNotExist:
+        return False
+    except Exception as e:
+        logger.error(f"An error occurred during cancellation: {e}")
+        return False
 
-        if google_event_id:
-            # Load credentials
-            service_account_file = config("GOOGLE_SERVICE_ACCOUNT_FILE")
-            creds = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
-            service = build("calendar", "v3", credentials=creds)
+def get_available_slots(date_str):
+    """
+    Fetches available slots for the given date from the EMR.
+    """
+    base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+    headers = get_emr_headers()
+    
+    try:
+        # 1. Get the primary doctor
+        docs_resp = requests.get(f"{base_url}/doctors/", headers=headers)
+        docs_resp.raise_for_status()
+        doctors = docs_resp.json()
+        if not doctors:
+             return []
+        doctor_id = doctors[0]['id']
+        
+        # 2. Fetch available online slots
+        url = f"{base_url}/appointments/available-slots/?doctor_id={doctor_id}&date={date_str}&online_only=true"
+        slots_resp = requests.get(url, headers=headers)
+        slots_resp.raise_for_status()
+        
+        return slots_resp.json()
+    except Exception as e:
+        logger.error(f"Error fetching available slots: {e}")
+        return []
 
-            # Delete from Google Calendar
-            try:
-                service.events().delete(
-                    calendarId="drmatiasetcheverry@gmail.com",
-                    eventId=google_event_id
-                ).execute()
-                print(f"Deleted event {google_event_id} from Google Calendar.")
-                log_debug(f"Successfully deleted event {google_event_id} from GCal")
-            except HttpError as error:
-                # If 410 (Gone) or 404 (Not Found), it's already deleted, so proceed to delete local
-                if error.resp.status in [404, 410]:
-                    print(f"Event {google_event_id} already deleted from GCal.")
-                else:
-                    print(f"Error deleting from GCal: {error}")
-                    log_debug(f"Error deleting from GCal: {error}")
-                    return False
+def book_appointment(user_info, date_str, start_time_str, end_time_str):
+    """
+    Books an appointment in the EMR API.
+    Returns True on success, or an error string describing the failure.
+    """
+    base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+    headers = get_emr_headers()
+    user_email = user_info.get("email")
+    first_name = user_info.get("given_name", user_info.get("name", "Unknown"))
+    last_name = user_info.get("family_name", "")
 
-        # Delete from local DB
-        appointment.delete()
-        print(f"Deleted appointment {appointment_id} from local DB.")
-        log_debug(f"Deleted appointment {appointment_id} from local DB")
+    try:
+        # 1. Get or Create Patient
+        patient_resp = requests.get(f"{base_url}/patients/?email={user_email}", headers=headers)
+        patient_resp.raise_for_status()
+        patients = patient_resp.json()
+
+        if patients:
+            patient_id = patients[0]['id']
+        else:
+            # Create new patient
+            new_pat_resp = requests.post(
+                f"{base_url}/patients/",
+                headers=headers,
+                json={
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": user_email,
+                    "clinic": 1
+                }
+            )
+            if not new_pat_resp.ok:
+                err = new_pat_resp.text[:200]
+                logger.error(f"Failed to create patient in EMR: {err}")
+                return f"No se pudo registrar el paciente en el sistema ({new_pat_resp.status_code}): {err}"
+            patient_id = new_pat_resp.json()['id']
+
+        # 2. Get the primary doctor (first active doctor in clinic 1)
+        docs_resp = requests.get(f"{base_url}/doctors/", headers=headers)
+        docs_resp.raise_for_status()
+        doctors = docs_resp.json()
+        if not doctors:
+            return "No hay médicos disponibles en el sistema."
+        doctor_id = doctors[0]['id']
+
+        # 3. Create Appointment
+        appt_resp = requests.post(
+            f"{base_url}/appointments/",
+            headers=headers,
+            json={
+                "clinic": 1,
+                "patient_id": patient_id,
+                "doctor": doctor_id,
+                "date": date_str,
+                "start_time": start_time_str,
+                "end_time": end_time_str,
+                "status": "SCHEDULED",
+                "is_online_booking": True,
+            }
+        )
+        if not appt_resp.ok:
+            err = appt_resp.text[:300]
+            logger.error(f"EMR rejected appointment creation ({appt_resp.status_code}): {err}")
+            return f"El sistema rechazó la reserva ({appt_resp.status_code}): {err}"
+
+        # Sync the new appointment down to local DB immediately
+        fetch_appointments(user_email)
         return True
 
-    except Appointment.DoesNotExist:
-        print(f"Appointment {appointment_id} not found.")
-        return False
+    except requests.exceptions.ConnectionError:
+        logger.error("Could not connect to EMR API")
+        return "No se pudo conectar al sistema de turnos. Intentá de nuevo en unos minutos."
     except Exception as e:
-        print(f"An error occurred during cancellation: {e}")
-        log_debug(f"Generic error during cancellation: {e}")
-        return False
+        logger.error(f"Error booking appointment: {e}")
+        return "Ocurrió un error inesperado al reservar. Por favor intentá de nuevo."
+
+
+def sync_user_appointments(user_email):
+    """
+    Syncs appointments from the EMR for a given user and returns a
+    structured result dict for use in async API responses.
+    Returns: {'synced': int, 'error': str|None}
+    """
+    try:
+        appointments = fetch_appointments(user_email)
+        return {'synced': len(appointments), 'error': None}
+    except Exception as e:
+        logger.error(f"sync_user_appointments failed: {e}")
+        return {'synced': 0, 'error': str(e)}
