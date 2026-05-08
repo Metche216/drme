@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from core.models import Appointment, PatientProfile
-from .services import fetch_appointments, cancel_appointment_service, get_available_slots, book_appointment, sync_user_appointments
+from .services import fetch_appointments, cancel_appointment_service, get_available_slots, book_appointment, sync_user_appointments, get_available_days_map
 from datetime import datetime
 
 import logging
@@ -72,6 +72,21 @@ def api_available_slots(request):
 
     slots = get_available_slots(date_str)
     return JsonResponse({'slots': slots})
+
+
+@require_http_methods(["GET"])
+def api_available_days(request):
+    """
+    Returns a JSON map of {date: slot_count} for the next 42 days
+    based on the doctor's active online schedules.
+    Powers the visual calendar on the booking page.
+    """
+    user_session = request.session.get("user")
+    if not user_session:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+    availability = get_available_days_map(days_ahead=42)
+    return JsonResponse({'available_days': availability})
 
 
 @require_http_methods(["POST"])

@@ -127,6 +127,71 @@ def get_available_slots(date_str):
         logger.error(f"Error fetching available slots: {e}")
         return []
 
+
+def get_available_days_map(days_ahead=42):
+    """
+    Returns a dict mapping date strings (YYYY-MM-DD) to slot counts
+    for the next `days_ahead` days, based on active online schedules.
+    Makes a single call to the EMR schedules endpoint — fast.
+    """
+    from datetime import date, timedelta
+
+    base_url = config('EMR_API_BASE_URL', default='http://localhost:8000/api')
+    headers = get_emr_headers()
+
+    try:
+        # 1. Get primary doctor
+        docs_resp = requests.get(f"{base_url}/doctors/", headers=headers)
+        docs_resp.raise_for_status()
+        doctors = docs_resp.json()
+        if not doctors:
+            return {}
+        doctor_id = doctors[0]['id']
+
+        # 2. Get all active online schedules for this doctor
+        sched_resp = requests.get(
+            f"{base_url}/schedules/?doctor_id={doctor_id}",
+            headers=headers
+        )
+        sched_resp.raise_for_status()
+        schedules = sched_resp.json()
+
+        # Build set of weekdays (0=Mon…6=Sun) that have online slots
+        online_weekdays = {
+            s['day_of_week']
+            for s in schedules
+            if s.get('is_online_allowed') and s.get('is_active', True)
+        }
+
+        # 3. Walk the next `days_ahead` days and mark available ones
+        availability = {}
+        today = date.today()
+        for i in range(days_ahead):
+            d = today + timedelta(days=i)
+            if d.weekday() in online_weekdays:
+                # Rough slot count from schedule duration
+                day_slots = [
+                    s for s in schedules
+                    if s['day_of_week'] == d.weekday()
+                    and s.get('is_online_allowed')
+                    and s.get('is_active', True)
+                ]
+                # Estimate slots (don't call per-day endpoint here)
+                slot_count = sum(
+                    max(0, (
+                        int(s['end_time'][:2]) * 60 + int(s['end_time'][3:5])
+                        - int(s['start_time'][:2]) * 60 - int(s['start_time'][3:5])
+                    ) // s.get('slot_duration', 15))
+                    for s in day_slots
+                )
+                availability[d.strftime('%Y-%m-%d')] = slot_count
+
+        return availability
+
+    except Exception as e:
+        logger.error(f"Error fetching available days map: {e}")
+        return {}
+
 def book_appointment(user_info, date_str, start_time_str, end_time_str):
     """
     Books an appointment in the EMR API.

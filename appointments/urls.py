@@ -8,4 +8,5 @@ urlpatterns = [
     path('api/slots/', views.api_available_slots, name='api_available_slots'),
     path('api/book/', views.api_book_appointment, name='api_book_appointment'),
     path('api/profile/', views.api_save_profile, name='api_save_profile'),
-]
+    path('api/days/', views.api_available_days, name='api_available_days'),
+]
