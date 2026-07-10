@@ -17,28 +17,10 @@ def _get_session_user(request):
 
 def list_appointments(request):
     """
-    View to render the appointments page.
-    Does NOT sync from EMR synchronously — sync is triggered async from the frontend.
+    Temporarily redirects to the contact section while online appointments are unavailable.
+    TODO: Re-enable the appointments page when the EMR API is connected to production.
     """
-    user_session = request.session.get("user")
-
-    if not user_session:
-        return redirect("login")
-
-    user_email = user_session.get("userinfo", {}).get("email")
-
-    # Read only from local DB — frontend will trigger async sync separately
-    appointments = Appointment.objects.filter(email=user_email).order_by('-start')
-
-    user_info = user_session.get("userinfo", {})
-    context = {
-        "appointments": appointments,
-        "user_name": user_info.get("name", ""),
-        "user_email": user_email,
-        "session": user_session
-    }
-
-    return render(request, "appointments/appointments.html", context)
+    return redirect("/#contacto")
 
 
 @require_http_methods(["GET"])

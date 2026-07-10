@@ -1,22 +1,31 @@
 from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
 from django.utils.translation import gettext_lazy as _
-
+import dj_database_url
 import os
+import base64
+import json
+import tempfile
 
-ENV_FILE = find_dotenv()
-if ENV_FILE:
-    load_dotenv(ENV_FILE)
+# Load .env only in local development (Railway injects env vars directly)
+try:
+    from dotenv import load_dotenv, find_dotenv
+    ENV_FILE = find_dotenv()
+    if ENV_FILE:
+        load_dotenv(ENV_FILE)
+except ImportError:
+    pass
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+# Strictly boolean: only 'True' (case-sensitive) enables debug mode.
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+# Accept ALLOWED_HOSTS from env as comma-separated list, plus localhost for dev.
+_allowed = os.environ.get('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in _allowed.split(',') if h.strip()] or ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -31,11 +40,11 @@ INSTALLED_APPS = [
     'core',
     'pages',
     'appointments',
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,71 +75,54 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Railway provides DATABASE_URL; fall back to SQLite for local dev.
+_database_url = os.environ.get('DATABASE_URL')
+if _database_url:
+    DATABASES = {
+        'default': dj_database_url.parse(_database_url, conn_max_age=600)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'es-ar'
-
 TIME_ZONE = 'America/La_Paz'
-
 USE_I18N = True
-
 USE_TZ = True
-
-# Enable localization system
 USE_L10N = True
 
-# Path where Django will look for translation files
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'locale'),
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# Static files — WhiteNoise serves them directly from gunicorn (no nginx needed)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Available languages
-
 LANGUAGES = [
     ('en', _('English')),
     ('es', _('Spanish')),
@@ -139,11 +131,47 @@ LANGUAGES = [
 
 # CUSTOM USER MODEL
 AUTH_USER_MODEL = 'core.User'
-
 LOGIN_URL = 'login'
 
-# AUTH0 Configuration
 
+# AUTH0 Configuration
 AUTH0_DOMAIN = os.environ.get("AUTH0_DOMAIN")
 AUTH0_CLIENT_ID = os.environ.get("AUTH0_CLIENT_ID")
 AUTH0_CLIENT_SECRET = os.environ.get("AUTH0_CLIENT_SECRET")
+
+
+# Google Service Account
+# In production: set GOOGLE_SERVICE_ACCOUNT_B64 to the base64-encoded JSON file.
+# In local dev: GOOGLE_SERVICE_ACCOUNT_FILE can point to the JSON file directly.
+GOOGLE_SERVICE_ACCOUNT_B64 = os.environ.get("GOOGLE_SERVICE_ACCOUNT_B64")
+GOOGLE_SERVICE_ACCOUNT_FILE = os.environ.get(
+    "GOOGLE_SERVICE_ACCOUNT_FILE",
+    str(BASE_DIR / 'calendariomedico-458621-532ee85d60df.json')
+)
+
+if GOOGLE_SERVICE_ACCOUNT_B64:
+    # Decode the base64 string and write to a temp file so Google SDK can read it
+    _sa_json = base64.b64decode(GOOGLE_SERVICE_ACCOUNT_B64).decode('utf-8')
+    _sa_tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False)
+    _sa_tmp.write(_sa_json)
+    _sa_tmp.flush()
+    GOOGLE_SERVICE_ACCOUNT_FILE = _sa_tmp.name
+
+
+# Security settings (only in production)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    X_FRAME_OPTIONS = 'DENY'
+
+
+# EMR API Configuration
+EMR_API_BASE_URL = os.environ.get('EMR_API_BASE_URL', 'http://localhost:8000/api')
+EMR_API_TOKEN = os.environ.get('EMR_API_TOKEN', '')
+EMR_API_USERNAME = os.environ.get('EMR_API_USERNAME', '')
+EMR_API_PASSWORD = os.environ.get('EMR_API_PASSWORD', '')
