@@ -23,9 +23,17 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # Strictly boolean: only 'True' (case-sensitive) enables debug mode.
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Accept ALLOWED_HOSTS from env as comma-separated list, plus localhost for dev.
-_allowed = os.environ.get('ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in _allowed.split(',') if h.strip()] or ['localhost', '127.0.0.1']
+# Always include the known production domains. Also merge any extra hosts
+# from the ALLOWED_HOSTS env var so Railway variables still work as expected.
+_PRODUCTION_HOSTS = [
+    'www.matiasetcheverry.com',
+    'matiasetcheverry.com',
+    'drme-web-production.up.railway.app',
+    'healthcheck.railway.app',
+]
+_env_hosts = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()
+              and not h.strip().startswith('${{')]  # ignore broken Railway self-references
+ALLOWED_HOSTS = list(dict.fromkeys(_PRODUCTION_HOSTS + _env_hosts + ['localhost', '127.0.0.1']))
 
 
 # Application definition
