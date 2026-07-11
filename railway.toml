@@ -1,5 +1,5 @@
 [build]
-builder = "NIXPACKS"
+builder = "railpack"
 
 [deploy]
 preDeployCommand = "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
