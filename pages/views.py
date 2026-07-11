@@ -66,6 +66,22 @@ def diagnostic(request):
         },
     )
 
+def about(request):
+    try:
+        user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
+        local_login(request, user)
+    except (KeyError, AttributeError):
+        user = None
+
+    return render(
+        request,
+        "about.html",
+        context={
+            "session": request.session.get("user"),
+            "user": user,
+        },
+    )
+
 def testimonials(request):
     try:
         user = User.objects.get(email=request.session["user"]["userinfo"]["email"])
