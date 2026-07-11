@@ -1,0 +1,8 @@
+# Force shell scripts to always use LF (Unix) line endings
+# regardless of the developer's OS — critical for Railway (Linux)
+*.sh text eol=lf
+
+# Python and config files
+*.py text eol=lf
+*.toml text eol=lf
+*.txt text eol=lf
