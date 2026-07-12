@@ -101,6 +101,9 @@
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        width: 100%;
+        height: auto;
+        display: block;
     }
     .surgery-section:hover .surgery-img {
         transform: scale(1.02);
@@ -159,6 +162,39 @@
     }
     .navbar:not(.scrolled) .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(253, 169, 13, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* ── Surgeries Mobile Responsive ── */
+    @media (max-width: 767.98px) {
+        .hero-surgery {
+            padding: 100px 0 50px;
+        }
+        .hero-surgery h1 {
+            font-size: 2.2rem;
+        }
+        .hero-surgery p {
+            font-size: 1.1rem;
+        }
+        .surgery-section {
+            padding: 50px 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+        }
+        .sticky-nav ul {
+            flex-wrap: wrap;
+            gap: 10px 16px;
+            justify-content: center;
+        }
+        .surgery-img {
+            max-height: 280px;
+            object-fit: cover;
+            margin-bottom: 28px;
+        }
+        /* Stack image above text on mobile */
+        .surgery-section .row .order-lg-2 {
+            order: -1 !important;
+        }
     }
 
 </style>
