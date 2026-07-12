@@ -3,8 +3,8 @@ builder = "NIXPACKS"
 buildCommand = "pip install -r requirements.txt"
 
 [deploy]
-preDeployCommand = "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
-startCommand = "gunicorn app.wsgi --log-file - --timeout 120 --workers 2"
+preDeployCommand = "python manage.py migrate --noinput"
+startCommand = "python manage.py collectstatic --noinput && gunicorn app.wsgi --log-file - --timeout 120 --workers 2"
 healthcheckPath = "/healthz/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"

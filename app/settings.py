@@ -180,6 +180,8 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
+    # Exempt Railway's internal HTTP health check from SSL redirect
+    SECURE_REDIRECT_EXEMPT = [r'^healthz/$']
 
 
 # EMR API Configuration
