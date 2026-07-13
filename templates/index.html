@@ -150,7 +150,7 @@
                                     <small class="text-muted">{{ testimonial.date|date:"F Y" }}</small>
                                 </div>
                             </div>
-                            <div class="text-warning">
+                            <div class="text-warning text-nowrap">
                                 {% for i in "12345" %}
                                     {% if forloop.counter <= testimonial.rating %}
                                         <i class="bi bi-star-fill"></i>
