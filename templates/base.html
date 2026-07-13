@@ -120,7 +120,7 @@
       /* ── XXL Desktop fixes ── */
       @media (min-width: 1400px) {
         .hero-section {
-          background-position: center top;
+          background-position: right top;
         }
       }
 
@@ -240,29 +240,24 @@
               <a class="nav-link" href="#contacto">Contacto</a>
             </li>
             {% if session %}
-            <li class="nav-item">
+            <li class="nav-item d-flex align-items-center">
               <span class="nav-link">Bienvenido, <strong>{{ session.userinfo.name }}</strong>!</span>
             </li>
             {% if user.is_staff or user.is_superuser %}
-            <p><a
-              class=" btn btn-outline-warning text-dark ms-lg-3 px-4"
-              href="{% url 'moderator_dashboard' %}"><i class="bi bi-shield-lock me-2"></i>Panel Moderador</a></p>
-            {% endif %}
-            <p><a
-              class=" btn btn-outline-primary text-white ms-lg-3 px-4"
-              href="{% url 'logout' %}">Cerrar Sesión</a></p>
-
-            {% else %}
-
-            <li class="nav-item">
-              <a
-                class="nav-link btn btn-primary text-white ms-lg-3 px-4"
-                href="{% url 'login' %}"
-                >Iniciar Sesión</a
-              >
-            {% endif %}
-
+            <li class="nav-item d-flex align-items-center">
+              <a class="nav-link btn btn-outline-warning text-dark ms-lg-3 px-4" href="{% url 'moderator_dashboard' %}">
+                <i class="bi bi-shield-lock me-2"></i>Panel Moderador
+              </a>
             </li>
+            {% endif %}
+            <li class="nav-item d-flex align-items-center mt-2 mt-lg-0">
+              <a class="nav-link btn btn-outline-primary text-dark ms-lg-3 px-4" href="{% url 'logout' %}">Cerrar Sesión</a>
+            </li>
+            {% else %}
+            <li class="nav-item d-flex align-items-center mt-2 mt-lg-0">
+              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="{% url 'login' %}">Iniciar Sesión</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
