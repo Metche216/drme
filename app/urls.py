@@ -5,6 +5,8 @@ from pages import views
 
 
 urlpatterns = [
+    # Admin portal moved to a non-standard URL for security
+    path('gestion-interna-dr/', admin.site.urls),
     path('healthz/', lambda request: HttpResponse('OK'), name='healthcheck'),
     path('', views.index, name='index'),
     path('cirugias/', views.surgeries, name='surgeries'),
