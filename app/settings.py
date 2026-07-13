@@ -188,4 +188,26 @@ if not DEBUG:
 EMR_API_BASE_URL = os.environ.get('EMR_API_BASE_URL', 'http://localhost:8000/api')
 EMR_API_TOKEN = os.environ.get('EMR_API_TOKEN', '')
 EMR_API_USERNAME = os.environ.get('EMR_API_USERNAME', '')
-EMR_API_PASSWORD = os.environ.get('EMR_API_PASSWORD', '')
+EMR_API_PASSWORD = os.environ.get('EMR_API_PASSWORD', '')
+
+# Logging configuration to output tracebacks to Railway's console in production
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
