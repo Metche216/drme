@@ -78,7 +78,7 @@
 
       .hero-section {
         background-size: cover;
-        background-position: center center;
+        background-position: right top;
         min-height: 100svh;
         display: flex;
         align-items: center;
@@ -114,13 +114,6 @@
         }
         .display-5 {
           font-size: 1.6rem !important;
-        }
-      }
-
-      /* ── XXL Desktop fixes ── */
-      @media (min-width: 1400px) {
-        .hero-section {
-          background-position: right top;
         }
       }
 
@@ -277,16 +270,9 @@
               Servicios de salud de calidad por más de 15 años.
             </p>
             <div class="social-icons mt-3">
-              <a href="#" class="text-white me-3"
-                ><i class="bi bi-facebook"></i
-              ></a>
-              <a href="#" class="text-white me-3"
-                ><i class="bi bi-twitter"></i
-              ></a>
-              <a href="#" class="text-white me-3"
-                ><i class="bi bi-instagram"></i
-              ></a>
-              <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+              <a href="https://www.facebook.com/mhetcheverry" target="_blank" rel="noopener noreferrer" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.instagram.com/metche.orl" target="_blank" rel="noopener noreferrer" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.linkedin.com/in/matias-etcheverry-orl/" target="_blank" rel="noopener noreferrer" class="text-white"><i class="bi bi-linkedin"></i></a>
             </div>
           </div>
           <div class="col-md-4 mb-4 mb-md-0">
@@ -294,7 +280,7 @@
             <p>
               <i class="bi bi-geo-alt me-2"></i> La Chonta 2375, Av. Alemana entre 2do y 3er Anillo, Santa Cruz de la Sierra
             </p>
-            <p><i class="bi bi-telephone me-2"></i> +591 75174664</p>
+            <p><i class="bi bi-whatsapp me-2"></i> <a href="https://wa.me/59175174664" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-none">+591 75174664</a></p>
             <p><i class="bi bi-envelope me-2"></i> drmatiasetcheverry@gmail.com</p>
           </div>
           <div class="col-md-4">
@@ -325,7 +311,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const navbar = document.querySelector(".navbar");
-        const isAlwaysScrolled = {% block always_scrolled %}false{% endblock %};
+        const isAlwaysScrolled = "{% block always_scrolled %}false{% endblock %}" === "true";
 
         window.addEventListener("scroll", function () {
           if (isAlwaysScrolled || window.scrollY > 50) {

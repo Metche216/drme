@@ -215,7 +215,7 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const navbar = document.querySelector(".navbar");
-        const isAlwaysScrolled = {% block always_scrolled %}false{% endblock %};
+        const isAlwaysScrolled = "{% block always_scrolled %}false{% endblock %}" === "true";
 
         window.addEventListener("scroll", function () {
           if (isAlwaysScrolled || window.scrollY > 50) {

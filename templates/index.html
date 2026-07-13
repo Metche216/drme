@@ -138,24 +138,24 @@
             <div class="col-md-4 mb-4">
                 <div class="card testimonial-card h-100 shadow-sm border-0">
                     <div class="card-body p-4">
-                        <div class="d-flex justify-content-between mb-3">
-                            <div class="d-flex align-items-center">
-                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
-                                    {{ testimonial.name|slice:":1"|upper }}
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">{{ testimonial.name }}</h5>
-                                    <small class="text-muted">{{ testimonial.date|date:"F Y" }}</small>
-                                </div>
+                        <div class="d-flex mb-3">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                                {{ testimonial.name|slice:":1"|upper }}
                             </div>
-                            <div class="text-warning text-nowrap">
-                                {% for i in "12345" %}
-                                    {% if forloop.counter <= testimonial.rating %}
-                                        <i class="bi bi-star-fill"></i>
-                                    {% else %}
-                                        <i class="bi bi-star"></i>
-                                    {% endif %}
-                                {% endfor %}
+                            <div>
+                                <h5 class="mb-0 text-break">{{ testimonial.name }}</h5>
+                                <div class="d-flex align-items-center gap-2 mt-1">
+                                    <small class="text-muted">{{ testimonial.date|date:"F Y" }}</small>
+                                    <div class="text-warning text-nowrap">
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= testimonial.rating %}
+                                                <i class="bi bi-star-fill" style="font-size: 0.9rem;"></i>
+                                            {% else %}
+                                                <i class="bi bi-star" style="font-size: 0.9rem;"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <p class="card-text fst-italic">"{{ testimonial.content }}"</p>
@@ -225,7 +225,7 @@
 </section>
 
 <!-- Map Section -->
-<section class="section p-0">
+<section class="section p-0 overflow-hidden">
     <div class="container-fluid p-0">
         <div class="ratio ratio-21x9" style="max-height: 400px;">
             <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3799.6126395473984!2d-63.17419892403637!3d-17.76288187450161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTfCsDQ1JzQ2LjQiUyA2M8KwMTAnMTcuOSJX!5e0!3m2!1ses-419!2sbo!4v1746483752192!5m2!1ses-419!2sbo" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
