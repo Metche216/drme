@@ -1,9 +1,15 @@
 [build]
+<<<<<<< HEAD
 builder = "railpack"
+=======
+builder = "NIXPACKS"
+buildCommand = "pip install -r requirements.txt"
+>>>>>>> e2cd89f3a88c7883ab35169ff494498f12528f9d
 
 [deploy]
-preDeployCommand = "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
-startCommand = "gunicorn app.wsgi --log-file -"
-healthcheckPath = "/"
+preDeployCommand = "python manage.py migrate --noinput"
+startCommand = "python manage.py collectstatic --noinput && gunicorn app.wsgi --log-file - --timeout 120 --workers 2"
+healthcheckPath = "/healthz/"
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3

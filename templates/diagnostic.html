@@ -135,8 +135,39 @@
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(253, 169, 13, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
     }
 
+    /* ── Diagnostic Mobile Responsive ── */
+    @media (max-width: 767.98px) {
+        .hero-diagnostic {
+            padding: 100px 0 60px;
+        }
+        .hero-diagnostic h1 {
+            font-size: 2.2rem;
+        }
+        .hero-diagnostic p {
+            font-size: 1.1rem;
+        }
+        .diagnostic-section {
+            padding: 50px 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+        }
+        /* Full-bleed image section: limit height on mobile */
+        .diagnostic-section .col-lg-6[style*="min-height"] {
+            min-height: 260px !important;
+        }
+        /* Ensure image col padding doesn't cause overflow */
+        .diagnostic-section .col-lg-6.p-5 {
+            padding: 28px 20px !important;
+        }
+        .feature-card {
+            padding: 24px 20px;
+        }
+    }
+
 </style>
 {% endblock %}
+
 
 {% block content %}
 

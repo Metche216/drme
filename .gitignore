@@ -21,6 +21,7 @@ media/
 Thumbs.db
 
 # environment
+.env
 *.env
 *.env.local
 
