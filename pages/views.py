@@ -171,7 +171,7 @@ def callback(request):
     print("pre try block")
     try:
         user_email = request.session["user"]["userinfo"]["email"]
-        user, created = User.objects.get_or_create(email=user_email, username=user_email)
+        user, created = User.objects.get_or_create(email=user_email, defaults={'username': user_email})
         print(created)
         print(user)
         if created:
