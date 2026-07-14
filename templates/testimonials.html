@@ -65,7 +65,7 @@
             <div class="col-md-8">
                 <div class="card shadow border-0">
                     <div class="card-body p-5">
-                        <h3 class="text-center mb-4">Déjanos tu Testimonio</h3>
+                        <h3 class="text-center mb-4">Dejanos tu Testimonio</h3>
                         
                         {% if user.is_authenticated %}
                             <form method="post" action="{% url 'testimonials' %}">
@@ -90,8 +90,8 @@
                             <div class="text-center py-4">
                                 <i class="bi bi-lock text-muted mb-3" style="font-size: 3rem;"></i>
                                 <h4 class="mb-3">Inicia sesión para participar</h4>
-                                <p class="text-muted mb-4">Necesitas estar registrado e iniciar sesión para poder dejar un testimonio de tu experiencia.</p>
-                                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-5">Iniciar Sesión</a>
+                                <p class="text-muted mb-4">Necesitás estar registrado e iniciar sesión para poder dejar un testimonio de tu experiencia.</p>
+                                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-5" onclick="window.open(this.href + '?popup=true', 'AuthPopup', 'width=500,height=600,menubar=no,toolbar=no'); return false;">Iniciar Sesión</a>
                             </div>
                         {% endif %}
                         

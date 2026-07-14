@@ -3,6 +3,7 @@ from authlib.integrations.django_client import OAuth
 from django.contrib.auth import login as local_login
 from django.conf import settings
 from django.shortcuts import redirect, render
+from django.http import HttpResponse
 from django.urls import reverse
 from urllib.parse import quote_plus, urlencode
 
@@ -98,7 +99,7 @@ def testimonials(request):
             testimonial = form.save(commit=False)
             testimonial.user = user
             testimonial.save()
-            messages.success(request, 'Su testimonio ha sido enviado y está pendiente de aprobación.')
+            messages.success(request, 'Tu testimonio ha sido enviado y está pendiente de aprobación.')
             return redirect('testimonials')
     else:
         initial_data = {'name': user.get_full_name() or user.username} if user else {}
@@ -159,6 +160,8 @@ oauth.register(
 )
 
 def login(request):
+    is_popup = request.GET.get('popup') == 'true'
+    request.session['auth_popup'] = is_popup
     return oauth.auth0.authorize_redirect(
         request, request.build_absolute_uri(reverse("callback"))
     )
@@ -180,6 +183,18 @@ def callback(request):
     except KeyError:
         print("KeyError: user not found")
         user = None
+        
+    is_popup = request.session.pop('auth_popup', False)
+    if is_popup:
+        return HttpResponse("""
+            <script>
+                if (window.opener && !window.opener.closed) {
+                    window.opener.location.reload();
+                }
+                window.close();
+            </script>
+        """)
+        
     return redirect(request.build_absolute_uri(reverse("index")))
 
 def logout(request):

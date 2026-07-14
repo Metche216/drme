@@ -192,7 +192,7 @@
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="{% url 'login' %}">Iniciar Sesión</a>
+              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="{% url 'login' %}" onclick="window.open(this.href + '?popup=true', 'AuthPopup', 'width=500,height=600,menubar=no,toolbar=no'); return false;">Iniciar Sesión</a>
             </li>
             {% endif %}
           </ul>
