@@ -14,7 +14,7 @@ service = build("calendar", "v3", credentials=creds)
 # Fetch a specific event
 event_id = "7rgisi44u9n6tjronp4ggvvrfs"
 event = service.events().get(
-    calendarId="drmatiasetcheverry@gmail.com",
+    calendarId="contacto@matiasetcheverry.com",
     eventId=event_id
 ).execute()
 

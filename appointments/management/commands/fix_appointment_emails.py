@@ -22,7 +22,7 @@ class Command(BaseCommand):
         dry_run = options['dry_run']
 
         # Find all appointments with doctor's email
-        doctor_email = "drmatiasetcheverry@gmail.com"
+        doctor_email = "contacto@matiasetcheverry.com"
         appointments = Appointment.objects.filter(email=doctor_email)
 
         self.stdout.write(f"Found {appointments.count()} appointments with doctor's email")
