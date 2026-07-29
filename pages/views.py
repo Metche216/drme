@@ -212,3 +212,9 @@ def logout(request):
         ),
     )
 
+def privacidad(request):
+    return render(request, "privacidad.html")
+
+
+def terminos(request):
+    return render(request, "terminos.html")

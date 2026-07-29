@@ -19,4 +19,6 @@ urlpatterns = [
     path('testimonios/', views.testimonials, name='testimonials'),
     path('mod/testimonios/', views.moderator_dashboard, name='moderator_dashboard'),
     path('mod/testimonios/<int:pk>/approve/', views.approve_testimonial, name='approve_testimonial'),
+    path('privacidad/', views.privacidad, name='privacidad'),
+    path('terminos/', views.terminos, name='terminos'),
 ]

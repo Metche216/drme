@@ -193,12 +193,8 @@
             </div>
         </div>
         <div class="col-lg-6 order-lg-2 m-0 p-0">
-             <div class="bg-light h-100 d-flex align-items-center justify-content-center text-muted" style="min-height: 500px; background-color: #f5f5f7;">
-                <!-- Placeholder for Doctor/Patient image -->
-                <div class="text-center p-5">
-                     <i class="bi bi-image fs-1 mb-3 d-block"></i>
-                     <span>Imagen: Doctor hablando con paciente (Full Height)</span>
-                </div>
+             <div class="h-100 position-relative" style="min-height: 500px;">
+                <img src="{% static 'images/hablando_con_paciente.png' %}" alt="Doctor hablando con paciente" class="img-fluid w-100 h-100" style="object-fit: cover; position: absolute; top:0; left:0;">
             </div>
         </div>
     </div>
@@ -257,7 +253,7 @@
     <div class="row g-0 align-items-stretch">
         <div class="col-lg-6 order-lg-1 m-0 p-0">
              <div class="h-100 position-relative" style="min-height: 500px;">
-                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Doctor explicando diagnóstico" class="img-fluid w-100 h-100" style="object-fit: cover; position: absolute; top:0; left:0;">
+                <img src="{% static 'images/foto_2.jpeg' %}" alt="Doctor explicando diagnóstico" class="img-fluid w-100 h-100" style="object-fit: cover; position: absolute; top:0; left:0;">
             </div>
         </div>
         <div class="col-lg-6 p-5 d-flex flex-column justify-content-center order-lg-2 bg-white">

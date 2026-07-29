@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Dr. MediCare - Tu Salud, Nuestra Prioridad{% endblock %}
+{% block title %}Otorrinolaringólogo en Santa Cruz de la Sierra | Dr. Matías Etcheverry{% endblock %}
 
 {% block content %}
 
@@ -11,19 +11,21 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div class="text-white">
-                    <h1 class="display-4 fw-bold mb-4">Excelencia en Otorrinolaringología</h1>
-                    <p class="lead mb-4">Servicios de salud excepcionales con un toque personal. Experiencia y profesionalismo dedicado a tu bienestar.</p>
+                    <h1 class="display-4 fw-bold mb-3">Otorrinolaringólogo en Santa Cruz de la Sierra</h1>
+                    <p class="lead fw-semibold mb-3">Diagnóstico preciso y resolución en la misma consulta.</p>
+                    <p class="mb-4" style="font-size: 1.05rem; opacity: 0.92; line-height: 1.7;">Mi consultorio está equipado para estudiar, diagnosticar y resolver la mayoría de las patologías de oído, nariz y garganta en una sola visita. Usted observa su propio estudio en pantalla durante el examen y se retira con un diagnóstico claro, un informe documentado y un plan de tratamiento definido.</p>
                     <div class="d-flex gap-3">
-                        <a href="{% url 'list_appointments' %}" class="btn btn-primary btn-lg">Turnos</a>
-                        <a href="#servicios" class="btn btn-outline-light btn-lg">Servicios</a>
+                        <a href="{% url 'list_appointments' %}" class="btn btn-primary btn-lg">Reservar turno</a>
+                        <!-- <a href="#consultorio" class="btn btn-outline-light btn-lg">Conocer el consultorio</a> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- Services Section -->
 <section id="servicios" class="section">
@@ -80,52 +82,141 @@
     </div>
 </section>
 
-<!-- Why Choose Us Section -->
-<section class="section bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">¿Qué vas a encontrar en mi consultorio?</h2>
+<!-- Quién soy Section -->
+<section id="quien-soy" class="position-relative overflow-hidden" style="background-color: #f5f5f7;">
+    <div class="container position-relative">
+        
+        <!-- Desktop: Absolute image covering left viewport to col 5 -->
+        <div class="d-none d-lg-block position-absolute top-0 h-100" 
+             style="left: calc(-50vw + 50%); width: calc(50vw - 50% + 41.66667%);">
+            <img src="{% static 'images/de frente.jpeg' %}" 
+                 class="w-100 h-100" 
+                 alt="Dr. Matías Etcheverry"
+                 style="object-fit: cover; object-position: center 25%;">
         </div>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-award text-primary" style="font-size: 2.5rem;"></i>
-                    </div>
-                    <h4>Experiencia y Dedicación</h4>
-                    <p class="text-muted">Cuento con años de práctica clínica dedicados a brindar diagnósticos certeros y un cuidado integral.</p>
+        
+        <div class="row g-0 align-items-stretch">
+            
+            <!-- Mobile: Image block -->
+            <div class="col-12 d-lg-none p-0 position-relative" style="min-height: 400px;">
+                <div class="position-absolute top-0 h-100" style="left: calc(-50vw + 50%); width: 100vw;">
+                    <img src="{% static 'images/de frente.jpeg' %}" 
+                         class="w-100 h-100" 
+                         alt="Dr. Matías Etcheverry"
+                         style="object-fit: cover; object-position: center 25%;">
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-clock text-primary" style="font-size: 2.5rem;"></i>
+
+            <!-- Text column -->
+            <div class="col-lg-7 offset-lg-5 d-flex align-items-center position-relative z-1">
+                <div style="padding: 80px 48px; text-align: justify; width: 100%;">
+                    <h2 class="fw-bold mb-1" style="font-size: 1.75rem; letter-spacing: -0.02em;">Dr. Matías Etcheverry</h2>
+                    <div class="mb-4" style="width: 40px; height: 3px; background-color: var(--primary-color); border-radius: 2px;"></div>
+
+                    <p class="mb-3" style="line-height: 1.8; color: #3a3a3c;">Soy médico cirujano especializado en Otorrinolaringología. Me formé en Buenos Aires y desarrollé mi carrera con un criterio constante: trabajar en los centros de mayor exigencia y junto a los profesionales de mayor referencia en la especialidad.</p>
+
+                    <p class="mb-3" style="line-height: 1.8; color: #3a3a3c;">Practico una medicina orientada al paciente. Eso significa dedicar el tiempo necesario a explicar el diagnóstico en términos comprensibles, indicar cirugía únicamente cuando existe indicación real y sostener el seguimiento hasta la resolución del cuadro.</p>
+
+                    <p class="mb-4" style="line-height: 1.8; color: #3a3a3c;">Mi formación no se detuvo con el título. Estudio de manera permanente el trabajo de los mejores especialistas del mundo e incorporo a mi práctica aquello que demuestra mejorar los resultados de mis pacientes.</p>
+
+                    <div class="mb-4">
+                        <h5 class="fw-semibold mb-3" style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; color: #6e6e73;">Formación y credenciales</h5>
+                        <ul class="list-unstyled" style="line-height: 2; color: #3a3a3c;">
+                            <li><i class="bi bi-check2 me-2" style="color: var(--primary-color);"></i>Médico Cirujano — <span style="color: #6e6e73;">Universidad del salvador (2010)</span></li>
+                            <li><i class="bi bi-check2 me-2" style="color: var(--primary-color);"></i>Especialista en Otorrinolaringología — <span style="color: #6e6e73;">UBA - ISO (2015)</span></li>
+                            <li><i class="bi bi-check2 me-2" style="color: var(--primary-color);"></i>Registro profesional N.º <span style="color: #6e6e73;">E-10275008 / RCM 17115</span></li>
+                            <li><i class="bi bi-check2 me-2" style="color: var(--primary-color);"></i>Formación complementaria en <span style="color: #6e6e73;">Endoscopía de oído</span></li>
+                        </ul>
                     </div>
-                    <h4>Eficiencia y Responsabilidad</h4>
-                    <p class="text-muted">Me esmero en que la atención sea puntual dedicandole a cada consulta el tiempo que se merece.</p>
+
+                    <a href="/acerca/" class="btn btn-outline-primary">Leer la trayectoria completa &rarr;</a>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-gear text-primary" style="font-size: 2.5rem;"></i>
-                    </div>
-                    <h4>Precisión y Tecnología</h4>
-                    <p class="text-muted">Me apoyo en herramientas y conocimientos actualizados para ofrecerte los mejores tratamientos posibles.</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="bi bi-heart text-primary" style="font-size: 2.5rem;"></i>
-                    </div>
-                    <h4>Atención Personalizada</h4>
-                    <p class="text-muted">Tu salud y comodidad son mi principal prioridad. Cada paso del tratamiento se adapta a tus necesidades.</p>
-                </div>
-            </div>
+            
         </div>
     </div>
 </section>
+
+<!-- Contact / Solicitar turno Section (with inline map) -->
+<section id="contacto" class="section py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row g-0 align-items-stretch bg-white shadow-sm rounded-4 overflow-hidden border">
+
+            <!-- Left: all contact data -->
+            <div class="col-lg-5 d-flex align-items-start" style="padding: 56px 48px;">
+                <div style="width: 100%;">
+                    <h2 class="fw-bold mb-1" style="font-size: 2rem; letter-spacing: -0.02em;">Solicitar un turno</h2>
+                    <div class="mb-4" style="width: 40px; height: 3px; background-color: var(--primary-color); border-radius: 2px;"></div>
+
+                    <p class="mb-4" style="color: #3a3a3c; line-height: 1.8;">
+                        Para agendar una consulta o realizar una consulta previa, puede comunicarse por cualquiera de estos medios.
+                    </p>
+
+                    <ul class="list-unstyled mb-4" style="color: #1d1d1f; line-height: 2.4;">
+                        <li>
+                            <i class="bi bi-whatsapp me-2" style="color: var(--primary-color);"></i>
+                            <strong>WhatsApp y teléfono</strong>
+                            <a href="tel:+59175174664" style="color: #3a3a3c; text-decoration: none; margin-left: 6px;">+591 75174664</a>
+                        </li>
+                        <li>
+                            <i class="bi bi-envelope me-2" style="color: var(--primary-color);"></i>
+                            <strong>Correo electrónico</strong>
+                            <a href="mailto:contacto@matiasetcheverry.com" style="color: #3a3a3c; text-decoration: none; margin-left: 6px;">contacto@matiasetcheverry.com</a>
+                        </li>
+                        <li>
+                            <i class="bi bi-geo-alt me-2" style="color: var(--primary-color);"></i>
+                            <strong>Dirección</strong>
+                            <span style="color: #3a3a3c; margin-left: 6px;">La Chonta 2375, Av. Alemana entre 2.º y 3.er Anillo, Santa Cruz de la Sierra</span>
+                        </li>
+                    </ul>
+
+                    <!-- Schedule -->
+                    <h5 class="fw-semibold mb-3" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.07em; color: #6e6e73;">Horario de Atención</h5>
+                    <table class="table table-borderless mb-4" style="color: #1d1d1f; font-size: 0.95rem;">
+                        <tbody>
+                            <tr>
+                                <td class="ps-0 fw-semibold" style="width: 140px; padding: 4px 0;">Lunes – Viernes</td>
+                                <td style="color: #3a3a3c; padding: 4px 0;">9:15 – 12:00 hs &nbsp;|&nbsp; 15:00 – 18:40 hs</td>
+                            </tr>
+                            <tr>
+                                <td class="ps-0 fw-semibold" style="padding: 4px 0;">Sábado y Domingo</td>
+                                <td style="color: #6e6e73; padding: 4px 0;">Cerrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- CTAs -->
+                    <div class="d-flex gap-3 flex-wrap">
+                        <!-- <a href="{% url 'list_appointments' %}" class="btn btn-primary px-4">Reservar turno</a> -->
+                        <a href="https://wa.me/59175174664?text=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20consulta" target="_blank" class="btn btn-outline-success px-4">
+                            <i class="bi bi-whatsapp me-1"></i> Escribir por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: map, full height -->
+            <div class="col-lg-7 d-flex flex-column" style="min-height: 520px;">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3799.6126395473984!2d-63.17419892403637!3d-17.76288187450161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTfCsDQ1JzQ2LjQiUyA2M8KwMTAnMTcuOSJX!5e0!3m2!1ses-419!2sbo!4v1746483752192!5m2!1ses-419!2sbo"
+                    style="width: 100%; flex: 1; border: 0; display: block; min-height: 420px;"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                <!-- Nav strip -->
+                <div class="d-flex justify-content-center gap-3 py-3" style="background-color: #f5f5f7; flex-shrink: 0;">
+                    <a href="https://www.google.com/maps/dir//-17.7628396,-63.1718405" target="_blank" class="btn btn-primary btn-sm">
+                        <img src="{% static 'icons/gmaps-removebg-preview.png' %}" alt="Google Maps" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Google Maps
+                    </a>
+                    <a href="https://waze.com/ul?ll=-17.7628396,-63.1718405&navigate=yes" target="_blank" class="btn btn-primary btn-sm">
+                        <img src="{% static 'icons/waze-removebg-preview.png' %}" alt="Waze" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Waze
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 
 <!-- Testimonials Section -->
 <section id="testimonios" class="section">
@@ -164,71 +255,25 @@
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center text-muted">
-                <p>Aún no hay testimonios publicados. ¡Sé el primero en dejarnos tu opinión!</p>
+            <div class="col-12">
+                <div class="text-center py-5 px-4 mx-auto" style="max-width: 560px;">
+                    <div class="mb-4" style="font-size: 3rem;">⭐</div>
+                    <h4 class="fw-bold mb-2" style="color: #1d1d1f; letter-spacing: -0.01em;">
+                        ¡Los testimonios están en camino!
+                    </h4>
+                    <p class="text-muted mb-4" style="line-height: 1.75;">
+                        Estamos construyendo este espacio con cuidado. Pronto encontrarás aquí las experiencias de quienes ya han pasado por la consulta. ¿Fue tu caso? Tu opinión es el primer ladrillo. 🙏
+                    </p>
+                    <a href="/testimonios/" class="btn btn-primary px-4">
+                        <i class="bi bi-chat-heart me-2"></i>Dejar mi testimonio
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
         <div class="text-center mt-4">
             <a href="/testimonios/" class="btn btn-outline-primary">Leer Más Testimonios</a>
         </div>
-    </div>
-</section>
-
-
-
-<!-- Contact Info Section -->
-<section id="contacto" class="section">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Información de Contacto</h2>
-            <p class="lead text-muted">Estamos aquí para ayudarle</p>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-4">
-                            <i class="bi bi-geo-alt text-primary" style="font-size: 3rem;"></i>
-                        </div>
-                        <h4 class="card-title mb-3">Ubicación</h4>
-                        <p class="card-text">La Chonta 2375<br>Av. Alemana entre 2do y 3er Anillo<br>Santa Cruz de la Sierra, Bolivia</p>
-                        <a href="https://www.google.com/maps/dir//-17.7628396,-63.1718405/@-17.7626771,-63.1736081,17.5z?entry=ttu&g_ep=EgoyMDI1MDUwNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn btn-outline-primary mt-3">Obtener Indicaciones</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-4">
-                            <i class="bi bi-telephone text-primary" style="font-size: 3rem;"></i>
-                        </div>
-                        <h4 class="card-title mb-3">Teléfono</h4>
-                        <p class="card-text">+591 75174664<br>contacto@matiasetcheverry.com</p>
-                        <a href="tel:+59175174664" class="btn btn-outline-primary mt-3">Llamar Ahora</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-4">
-                            <i class="bi bi-clock text-primary" style="font-size: 3rem;"></i>
-                        </div>
-                        <h4 class="card-title mb-3">Horario de Atención</h4>
-                        <p class="card-text">Lunes - Viernes:<br>9:15 – 12:00 hs &nbsp;|&nbsp; 15:00 – 18:40 hs<br>Sábado y Domingo: Cerrado</p>
-                        <a href="/contacto/" class="btn btn-outline-primary mt-3">Contactanos</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Map Section -->
-<section class="section p-0">
-    <div class="container-fluid p-0">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3799.6126395473984!2d-63.17419892403637!3d-17.76288187450161!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTfCsDQ1JzQ2LjQiUyA2M8KwMTAnMTcuOSJX!5e0!3m2!1ses-419!2sbo!4v1746483752192!5m2!1ses-419!2sbo" style="width: 100%; height: 50vh; min-height: 300px; max-height: 400px; border:0; display: block;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 </section>
 
