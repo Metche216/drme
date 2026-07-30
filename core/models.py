@@ -24,6 +24,7 @@ class Testimonio(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100)
+    contact_info = models.CharField(max_length=255, blank=True, null=True)
     content = models.TextField()
     rating = models.IntegerField(default=5)
     date = models.DateField(auto_now_add=True)

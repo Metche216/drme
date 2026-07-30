@@ -43,7 +43,7 @@
                             <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
                             <td>
                                 <strong>{{ t.name }}</strong><br>
-                                <small class="text-muted">{{ t.user.email|default:"Sin email" }}</small>
+                                <small class="text-muted">{{ t.contact_info|default:t.user.email|default:"Sin contacto" }}</small>
                             </td>
                             <td class="text-warning">
                                 {% for i in "12345" %}
@@ -92,7 +92,7 @@
                             <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
                             <td>
                                 <strong>{{ t.name }}</strong><br>
-                                <small class="text-muted">{{ t.user.email|default:"Sin email" }}</small>
+                                <small class="text-muted">{{ t.contact_info|default:t.user.email|default:"Sin contacto" }}</small>
                             </td>
                             <td class="text-warning">
                                 {% for i in "12345" %}

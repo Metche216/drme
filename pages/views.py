@@ -91,13 +91,11 @@ def testimonials(request):
         user = None
 
     if request.method == 'POST':
-        if not user:
-            messages.error(request, 'You must be logged in to leave a testimonial.')
-            return redirect('login')
         form = TestimonioForm(request.POST)
         if form.is_valid():
             testimonial = form.save(commit=False)
-            testimonial.user = user
+            if user:
+                testimonial.user = user
             testimonial.save()
             messages.success(request, 'Tu testimonio ha sido enviado y está pendiente de aprobación.')
             return redirect('testimonials')
