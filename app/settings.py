@@ -74,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.schema_context',
             ],
         },
     },
@@ -210,4 +211,38 @@ LOGGING = {
             'propagate': False,
         },
     },
+}
+
+# JSON-LD Schema Data for Local SEO
+CLINIC_SCHEMA_DATA = {
+    "@context": "https://schema.org",
+    "@type": ["MedicalClinic", "Physician"],
+    "name": "Dr. Matías Etcheverry - Otorrinolaringología y Cirugía",
+    "url": "https://matiasetcheverry.com",
+    "telephone": os.environ.get("CLINIC_TELEPHONE", "+591 70000000"),
+    "medicalSpecialty": "Otolaryngologic",
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Santa Cruz de la Sierra",
+        "addressCountry": "BO"
+    },
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "-17.7833",
+        "longitude": "-63.1821"
+    },
+    "openingHoursSpecification": [
+        {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "opens": "09:00",
+            "closes": "19:00"
+        }
+    ]
 }

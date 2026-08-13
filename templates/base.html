@@ -197,6 +197,11 @@
         padding: 40px 0;
       }
     </style>
+    {% if schema_json %}
+    <script type="application/ld+json">
+        {{ schema_json|safe }}
+    </script>
+    {% endif %}
     {% block extra_css %}{% endblock %}
   </head>
   <body>
