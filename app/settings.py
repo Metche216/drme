@@ -38,6 +38,8 @@ ALLOWED_HOSTS = list(dict.fromkeys(_PRODUCTION_HOSTS + _env_hosts + ['localhost'
 
 # Application definition
 
+APPEND_SLASH = True
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'core',
     'pages',
     'appointments',
@@ -216,33 +219,37 @@ LOGGING = {
 # JSON-LD Schema Data for Local SEO
 CLINIC_SCHEMA_DATA = {
     "@context": "https://schema.org",
-    "@type": ["MedicalClinic", "Physician"],
-    "name": "Dr. Matías Etcheverry - Otorrinolaringología y Cirugía",
-    "url": "https://matiasetcheverry.com",
-    "telephone": os.environ.get("CLINIC_TELEPHONE", "+591 70000000"),
-    "medicalSpecialty": "Otolaryngologic",
-    "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Santa Cruz de la Sierra",
-        "addressCountry": "BO"
-    },
-    "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "-17.7833",
-        "longitude": "-63.1821"
-    },
-    "openingHoursSpecification": [
+    "@graph": [
         {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday"
+            "@type": ["MedicalClinic", "Physician"],
+            "@id": "https://www.matiasetcheverry.com/#clinic",
+            "name": "Dr. Matias Etcheverry | Otorrinolaringólogo en Santa Cruz de La Sierra",
+            "url": "https://www.matiasetcheverry.com",
+            "telephone": "+59175174664",
+            "medicalSpecialty": "Otolaryngologic",
+            "sameAs": [
+                "https://maps.google.com/?cid=8053624377149359743"
             ],
-            "opens": "09:00",
-            "closes": "19:00"
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Chonta 2375",
+                "addressLocality": "Santa Cruz de la Sierra",
+                "addressRegion": "Santa Cruz",
+                "addressCountry": "BO"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": -17.7833,
+                "longitude": -63.1821
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "09:30",
+                    "closes": "23:59"
+                }
+            ]
         }
     ]
 }

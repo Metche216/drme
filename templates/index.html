@@ -2,6 +2,11 @@
 {% load static %}
 
 {% block title %}Otorrinolaringólogo en Santa Cruz de la Sierra | Dr. Matías Etcheverry{% endblock %}
+{% block meta_description %}Especialista en oído, nariz y garganta. Diagnóstico y resolución en consulta con endoscopía HD. Agenda tu cita en Santa Cruz hoy. Llama al +59175174664.{% endblock %}
+
+{% block extra_css %}
+<link rel="preload" as="image" href="{% static 'images/hero-bg.jpg' %}" fetchpriority="high">
+{% endblock %}
 
 {% block content %}
 
@@ -92,6 +97,7 @@
             <img src="{% static 'images/de frente.jpeg' %}" 
                  class="w-100 h-100" 
                  alt="Dr. Matías Etcheverry"
+                 loading="lazy"
                  style="object-fit: cover; object-position: center 25%;">
         </div>
         
@@ -103,6 +109,7 @@
                     <img src="{% static 'images/de frente.jpeg' %}" 
                          class="w-100 h-100" 
                          alt="Dr. Matías Etcheverry"
+                         loading="lazy"
                          style="object-fit: cover; object-position: center 25%;">
                 </div>
             </div>
@@ -205,10 +212,10 @@
                 <!-- Nav strip -->
                 <div class="d-flex justify-content-center gap-3 py-3" style="background-color: #f5f5f7; flex-shrink: 0;">
                     <a href="https://www.google.com/maps/dir//-17.7628396,-63.1718405" target="_blank" class="btn btn-primary btn-sm">
-                        <img src="{% static 'icons/gmaps-removebg-preview.png' %}" alt="Google Maps" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Google Maps
+                        <img src="{% static 'icons/gmaps-removebg-preview.png' %}" alt="Google Maps" width="18" height="18" loading="lazy" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Google Maps
                     </a>
                     <a href="https://waze.com/ul?ll=-17.7628396,-63.1718405&navigate=yes" target="_blank" class="btn btn-primary btn-sm">
-                        <img src="{% static 'icons/waze-removebg-preview.png' %}" alt="Waze" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Waze
+                        <img src="{% static 'icons/waze-removebg-preview.png' %}" alt="Waze" width="18" height="18" loading="lazy" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" class="me-1"> Abrir en Waze
                     </a>
                 </div>
             </div>
