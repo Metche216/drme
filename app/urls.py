@@ -23,6 +23,7 @@ urlpatterns = [
     path('healthz/', lambda request: HttpResponse('OK'), name='healthcheck'),
     path('robots.txt', lambda r: HttpResponse(ROBOTS_TXT, content_type="text/plain")),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('entry.worker.js', lambda r: HttpResponse("self.addEventListener('install', () => { self.skipWaiting(); }); self.addEventListener('activate', () => { self.registration.unregister(); });", content_type='application/javascript')),
     path('', views.index, name='index'),
     path('cirugias/', views.surgeries, name='surgeries'),
     path('diagnostico/', views.diagnostic, name='diagnostic'),

@@ -183,18 +183,33 @@
             <li class="nav-item">
               <a class="nav-link active" href="/">Inicio</a>
             </li>
-            {% if session %}
-             <li class="nav-item">
-              <a class="nav-link" href="#">Mi Perfil</a>
+            <li class="nav-item">
+              <a class="nav-link" href="/#consultorio">Consultorio</a>
             </li>
-            <li class="nav-item ms-lg-3 d-flex align-items-center">
-                <span class="nav-link text-white-50 small me-2">Hola, {{ session.userinfo.name }}</span>
-                <a class="btn btn-outline-primary px-4" href="{% url 'logout' %}">Cerrar Sesión</a>
+            <li class="nav-item">
+              <a class="nav-link" href="/#quien-soy">Sobre mí</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/#testimonios">Testimonios</a>
+            </li>
+            <li class="nav-item d-flex align-items-center mt-2 mt-lg-0">
+              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="/#contacto" style="opacity: 1 !important;">Agendar Cita</a>
+            </li>
+            {% if session %}
+            <li class="nav-item d-flex align-items-center">
+              <span class="nav-link">Bienvenido, <strong>{{ session.userinfo.name }}</strong>!</span>
+            </li>
+            {% if user.is_staff or user.is_superuser %}
+            <li class="nav-item d-flex align-items-center">
+              <a class="nav-link btn btn-outline-warning text-dark ms-lg-3 px-4" href="{% url 'moderator_dashboard' %}">
+                <i class="bi bi-shield-lock me-2"></i>Panel Moderador
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item d-flex align-items-center mt-2 mt-lg-0">
+              <a class="nav-link btn btn-outline-primary text-dark ms-lg-3 px-4" href="{% url 'logout' %}">Cerrar Sesión</a>
             </li>
             {% else %}
-            <li class="nav-item">
-              <a class="nav-link btn btn-primary text-white ms-lg-3 px-4" href="{% url 'login' %}" onclick="window.open(this.href + '?popup=true', 'AuthPopup', 'width=500,height=600,menubar=no,toolbar=no'); return false;">Iniciar Sesión</a>
-            </li>
             {% endif %}
           </ul>
         </div>
