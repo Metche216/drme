@@ -9,6 +9,7 @@ from urllib.parse import quote_plus, urlencode
 
 from core.models import User, Testimonio
 from .forms import TestimonioForm
+from .data import get_procedure
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_POST
@@ -216,3 +217,12 @@ def privacidad(request):
 
 def terminos(request):
     return render(request, "terminos.html")
+
+
+def procedure_landing(request, procedure_slug):
+    """Dynamic landing page for a specific surgical/treatment procedure."""
+    procedure = get_procedure(procedure_slug)
+    if procedure is None:
+        from django.http import Http404
+        raise Http404("Procedure not found")
+    return render(request, "landing_procedure.html", {"procedure": procedure})

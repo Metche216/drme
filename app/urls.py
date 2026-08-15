@@ -3,10 +3,11 @@ from django.urls import path, include
 from django.http import HttpResponse
 from pages import views
 from django.contrib.sitemaps.views import sitemap
-from pages.sitemaps import StaticViewSitemap
+from pages.sitemaps import StaticViewSitemap, ProcedureSitemap
 
 sitemaps = {
     'static': StaticViewSitemap,
+    'procedures': ProcedureSitemap,
 }
 
 ROBOTS_TXT = """User-agent: *
@@ -37,4 +38,5 @@ urlpatterns = [
     path('mod/testimonios/<int:pk>/approve/', views.approve_testimonial, name='approve_testimonial'),
     path('privacidad/', views.privacidad, name='privacidad'),
     path('terminos/', views.terminos, name='terminos'),
+    path('procedimiento/<slug:procedure_slug>/', views.procedure_landing, name='procedure_landing'),
 ]
