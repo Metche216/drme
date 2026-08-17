@@ -76,8 +76,8 @@
     /* Features Grid */
     .feature-card {
         background: #fff;
-        border-radius: 24px;
-        padding: 40px;
+        border-radius: 16px;
+        padding: 24px;
         height: 100%;
         box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -88,19 +88,19 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
     .feature-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: var(--primary-color);
-        margin-bottom: 20px;
+        margin-bottom: 12px;
         display: inline-block;
     }
     .feature-title {
-        font-size: 1.3rem;
+        font-size: 1.15rem;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         color: var(--text-color);
     }
     .feature-text {
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: #86868b;
         margin-bottom: 0;
     }
@@ -175,7 +175,7 @@
 <!-- Hero -->
 <section class="hero-diagnostic fade-in">
     <div class="container">
-        <h1>Certeza Diagnóstica</h1>
+        <h1>En el consultorio...</h1>
         <p>"Cuanto más acertado es el diagnóstico... más efectivo será el tratamiento."</p>
     </div>
 </section>
@@ -209,40 +209,80 @@
             <p class="text-body-large text-muted">Equipamiento de última generación para una evaluación completa.</p>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4 fade-in stagger-1">
-                <div class="feature-card">
-                    <i class="bi bi-eye feature-icon"></i>
-                    <h3 class="feature-title">Microscopio Quirúrgico</h3>
-                    <p class="feature-text">Visualización de alta precisión para patologías de oído y laringe, permitiendo detalles invisibles a simple vista.</p>
+        <div class="row align-items-stretch g-4">
+            <!-- Left: Carousel -->
+            <div class="col-lg-5 fade-in">
+                <div id="techCarousel" class="carousel slide shadow-lg rounded-4 overflow-hidden h-100" data-bs-ride="carousel">
+                    <!-- Indicators -->
+                    <div class="carousel-indicators" style="bottom: 10px;">
+                        <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#techCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+
+                    <!-- Inner -->
+                    <div class="carousel-inner h-100">
+                        <div class="carousel-item active h-100">
+                            <img src="{% static 'images/caroussell/microscopio.jpg' %}" class="d-block w-100 h-100" style="object-fit: cover; min-height: 100%;" alt="Microscopio Quirúrgico">
+                        </div>
+                        <div class="carousel-item h-100">
+                            <img src="{% static 'images/caroussell/cauterizacion.jpg' %}" class="d-block w-100 h-100" style="object-fit: cover; min-height: 100%;" alt="Cauterización Bipolar/Monopolar">
+                        </div>
+                        <div class="carousel-item h-100">
+                            <img src="{% static 'images/caroussell/endoscopios.jpg' %}" class="d-block w-100 h-100" style="object-fit: cover; min-height: 100%;" alt="Endoscopios">
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#techCarousel" data-bs-slide="prev" style="width: 15%;">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 2.5rem; height: 2.5rem;"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#techCarousel" data-bs-slide="next" style="width: 15%;">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="width: 2.5rem; height: 2.5rem;"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4 fade-in stagger-2">
-                <div class="feature-card">
-                    <i class="bi bi-camera-video feature-icon"></i>
-                    <h3 class="feature-title">Rinofibrolaringoscopio</h3>
-                    <p class="feature-text">Exploración flexible y detallada de la vía aérea superior: nariz, faringe y laringe, con mínima molestia.</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 fade-in stagger-3">
-                <div class="feature-card">
-                    <i class="bi bi-hdd-network feature-icon"></i>
-                    <h3 class="feature-title">Endoscopía HD</h3>
-                    <p class="feature-text">Sistemas de alta definición para evaluaciones otoscópicas y nasales con registro de imágenes.</p>
-                </div>
-            </div>
-             <div class="col-md-6 col-lg-6 fade-in stagger-1">
-                <div class="feature-card text-center">
-                     <i class="bi bi-activity feature-icon"></i>
-                    <h3 class="feature-title">Cauterización Bipolar/Monopolar</h3>
-                    <p class="feature-text">Tratamiento ambulatorio preciso y seguro para epistaxis (sangrado nasal) y pequeñas lesiones.</p>
-                </div>
-            </div>
-             <div class="col-md-6 col-lg-6 fade-in stagger-2">
-                <div class="feature-card text-center">
-                     <i class="bi bi-display feature-icon"></i>
-                    <h3 class="feature-title">Sistema de Video Integrado</h3>
-                    <p class="feature-text">Para que veas lo que nosotros vemos.</p>
+
+            <!-- Right: Features Grid -->
+            <div class="col-lg-7">
+                <div class="row g-3">
+                    <div class="col-md-6 fade-in stagger-1">
+                        <div class="feature-card h-100">
+                            <i class="bi bi-eye feature-icon"></i>
+                            <h3 class="feature-title">Microscopio Quirúrgico</h3>
+                            <p class="feature-text">Visualización de alta precisión para patologías de oído y laringe, permitiendo detalles invisibles a simple vista.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in stagger-2">
+                        <div class="feature-card h-100">
+                            <i class="bi bi-camera-video feature-icon"></i>
+                            <h3 class="feature-title">Rinofibrolaringoscopio</h3>
+                            <p class="feature-text">Exploración flexible y detallada de la vía aérea superior: nariz, faringe y laringe, con mínima molestia.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in stagger-3">
+                        <div class="feature-card h-100">
+                            <i class="bi bi-hdd-network feature-icon"></i>
+                            <h3 class="feature-title">Endoscopía HD</h3>
+                            <p class="feature-text">Sistemas de alta definición para evaluaciones otoscópicas y nasales con registro de imágenes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in stagger-1">
+                        <div class="feature-card h-100 text-center">
+                            <i class="bi bi-activity feature-icon"></i>
+                            <h3 class="feature-title">Cauterización Bipolar</h3>
+                            <p class="feature-text">Tratamiento ambulatorio preciso y seguro para epistaxis y pequeñas lesiones.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12 fade-in stagger-2">
+                        <div class="feature-card h-100 text-center">
+                            <i class="bi bi-display feature-icon"></i>
+                            <h3 class="feature-title">Sistema de Video Integrado</h3>
+                            <p class="feature-text">Para que veas lo que nosotros vemos.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

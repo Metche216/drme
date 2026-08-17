@@ -232,7 +232,7 @@ PROCEDURES = {
         "cta_headline": "¿Tu oído merece atención especializada?",
         "hero_image": "images/Oido/494216822_2384174458625905_7175777455310681778_n.jpg",
         "hero_image_alt": "Cirugía de oído con microscopio quirúrgico",
-        "treatment_image": "images/Oido/IMG_1003.JPG",
+        "treatment_image": "images/Oido/OIDO.jpg",
         "treatment_image_alt": "Procedimiento de timpanoplastia",
         "symptoms": [
             "Perforación timpánica",
