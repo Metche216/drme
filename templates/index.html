@@ -366,27 +366,43 @@
                 // 1. Pausar todos los videos en el carrusel
                 var allVideos = myCarousel.querySelectorAll('.carousel-video');
                 allVideos.forEach(function(video) {
-                    video.pause();
+                    // Solo pausar si no está pausado
+                    if (!video.paused) {
+                        video.pause();
+                    }
                 });
 
                 // 2. Buscar si el slide activo (el que acaba de aparecer) tiene un video
-                var activeSlide = event.relatedTarget; // El div.carousel-item que ahora está activo
+                var activeSlide = event.relatedTarget; 
                 var activeVideo = activeSlide.querySelector('.carousel-video');
 
                 // 3. Si hay un video, reproducirlo
                 if (activeVideo) {
-                    activeVideo.play().catch(function(error) {
-                        console.log("Autoplay fue prevenido por el navegador.", error);
-                    });
+                    // Reiniciar el video al inicio para que se vea completo
+                    activeVideo.currentTime = 0;
+                    var playPromise = activeVideo.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(function(error) {
+                            // Ignorar el error AbortError que ocurre si el usuario cambia de slide muy rápido
+                            if (error.name !== 'AbortError') {
+                                console.debug("Autoplay prevenido:", error);
+                            }
+                        });
+                    }
                 }
             });
 
             // Si el primer slide por defecto tiene un video, reproducirlo al cargar la página
             var firstActiveVideo = myCarousel.querySelector('.carousel-item.active .carousel-video');
             if (firstActiveVideo) {
-                firstActiveVideo.play().catch(function(error) {
-                    console.log("Autoplay fue prevenido por el navegador.", error);
-                });
+                var playPromise = firstActiveVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        if (error.name !== 'AbortError') {
+                            console.debug("Autoplay prevenido:", error);
+                        }
+                    });
+                }
             }
         }
     });
