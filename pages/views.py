@@ -99,7 +99,7 @@ def testimonials(request):
                 testimonial.user = user
             testimonial.save()
             messages.success(request, 'Tu testimonio ha sido enviado y está pendiente de aprobación.')
-            return redirect('testimonials')
+            return redirect('index')
     else:
         initial_data = {'name': user.get_full_name() or user.username} if user else {}
         form = TestimonioForm(initial=initial_data)
