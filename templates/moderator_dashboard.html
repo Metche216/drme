@@ -43,7 +43,9 @@
                             <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
                             <td>
                                 <strong>{{ t.name }}</strong><br>
-                                <small class="text-muted">{{ t.contact_info|default:t.user.email|default:"Sin contacto" }}</small>
+                                <small class="text-muted">
+                                    {% if t.contact_info %}{{ t.contact_info }}{% elif t.user %}{{ t.user.email }}{% else %}Sin contacto{% endif %}
+                                </small>
                             </td>
                             <td class="text-warning">
                                 {% for i in "12345" %}
@@ -56,6 +58,9 @@
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-circle me-1"></i>Aprobar</button>
                                 </form>
+                                <button type="button" class="btn btn-sm btn-danger ms-1" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ t.id }}" data-name="{{ t.name }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
                         {% empty %}
@@ -92,7 +97,9 @@
                             <td>{{ t.created_at|date:"d M Y, H:i" }}</td>
                             <td>
                                 <strong>{{ t.name }}</strong><br>
-                                <small class="text-muted">{{ t.contact_info|default:t.user.email|default:"Sin contacto" }}</small>
+                                <small class="text-muted">
+                                    {% if t.contact_info %}{{ t.contact_info }}{% elif t.user %}{{ t.user.email }}{% else %}Sin contacto{% endif %}
+                                </small>
                             </td>
                             <td class="text-warning">
                                 {% for i in "12345" %}
@@ -101,10 +108,12 @@
                             </td>
                             <td><span class="text-truncate d-inline-block" style="max-width: 300px;" title="{{ t.content }}">"{{ t.content }}"</span></td>
                             <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#hideModal{{ t.id }}">
+                                <button type="button" class="btn btn-sm btn-outline-warning" data-bs-toggle="modal" data-bs-target="#hideModal{{ t.id }}">
                                     <i class="bi bi-eye-slash me-1"></i>Ocultar
                                 </button>
-                                
+                                <button type="button" class="btn btn-sm btn-outline-danger ms-1" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ t.id }}" data-name="{{ t.name }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                                 <!-- Hide Testimonial Modal -->
                                 <div class="modal fade" id="hideModal{{ t.id }}" tabindex="-1" aria-hidden="true">
                                   <div class="modal-dialog">
@@ -140,4 +149,71 @@
     </div>
 
 </div>
+
+<!-- Delete Testimonial Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content border-danger">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i>Eliminar Testimonio</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-start">
+        <p>Esta acción <strong>no se puede deshacer</strong>. Esto eliminará permanentemente el testimonio de <strong id="deleteModalNameDisplay"></strong>.</p>
+        <p>Por favor, escribe <strong class="user-select-all text-danger" id="deleteModalKeyword"></strong> para confirmar.</p>
+        <input type="text" id="deleteConfirmInput" class="form-control" autocomplete="off" placeholder="Escribe el nombre aquí">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <form method="post" id="deleteModalForm" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" id="deleteConfirmBtn" class="btn btn-danger" disabled>Eliminar permanentemente</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteModal = document.getElementById('deleteModal');
+    if (deleteModal) {
+        const input = document.getElementById('deleteConfirmInput');
+        const btn = document.getElementById('deleteConfirmBtn');
+        const nameDisplay = document.getElementById('deleteModalNameDisplay');
+        const keywordDisplay = document.getElementById('deleteModalKeyword');
+        const form = document.getElementById('deleteModalForm');
+        let expectedKeyword = '';
+
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            
+            expectedKeyword = name;
+            
+            nameDisplay.textContent = name;
+            keywordDisplay.textContent = name;
+            form.action = `/mod/testimonios/${id}/delete/`;
+            
+            input.value = '';
+            btn.disabled = true;
+        });
+
+        input.addEventListener('input', function() {
+            if (this.value.trim() === expectedKeyword) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
+            }
+        });
+        
+        // Auto-focus on input when modal is fully shown
+        deleteModal.addEventListener('shown.bs.modal', function () {
+            input.focus();
+        });
+    }
+});
+</script>
+
 {% endblock %}

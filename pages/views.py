@@ -145,6 +145,15 @@ def approve_testimonial(request, pk):
     messages.success(request, f'Testimonio de {testimonial.name} fue {status}.')
     return redirect('moderator_dashboard')
 
+@require_POST
+@user_passes_test(is_moderator)
+def delete_testimonial(request, pk):
+    testimonial = get_object_or_404(Testimonio, pk=pk)
+    name = testimonial.name
+    testimonial.delete()
+    messages.success(request, f'El testimonio de {name} fue eliminado permanentemente.')
+    return redirect('moderator_dashboard')
+
 # Auth0
 oauth = OAuth()
 
