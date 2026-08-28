@@ -225,7 +225,7 @@ CLINIC_SCHEMA_DATA = {
             "@id": "https://www.matiasetcheverry.com/#clinic",
             "name": "Dr. Matias Etcheverry | Otorrinolaringólogo en Santa Cruz de La Sierra",
             "url": "https://www.matiasetcheverry.com",
-            "telephone": "+59175174664",
+            "telephone": "+59178006059",
             "medicalSpecialty": "Otolaryngologic",
             "sameAs": [
                 "https://maps.google.com/?cid=8053624377149359743"
@@ -252,4 +252,4 @@ CLINIC_SCHEMA_DATA = {
             ]
         }
     ]
-}
+}
