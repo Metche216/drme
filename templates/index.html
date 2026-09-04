@@ -12,12 +12,13 @@
 
 
 <!-- Hero Section -->
-<section class="hero-section" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({% static 'images/hero-bg.jpg' %});">
+<section class="hero-section" style="background-image: linear-gradient(90deg, rgba(33, 37, 41, 0.95) 0%, rgba(33, 37, 41, 0.75) 45%, rgba(0, 0, 0, 0) 100%), url({% static 'images/hero-bg.jpg' %});">
 
     <div class="container">
         <div class="row">
             <div class="col-lg-7">
                 <div class="text-white">
+                    <img src="{% static 'icons/logo_sem_fundo.png' %}" alt="Dr.ME Logo" class="mb-4" style="max-width: 600px; height: auto; width: 100%;">
                     <h1 class="display-4 fw-bold mb-3">Otorrinolaringólogo en Santa Cruz de la Sierra</h1>
                     <p class="lead fw-semibold mb-3">Diagnóstico preciso y resolución en la misma consulta.</p>
                     <p class="mb-4" style="font-size: 1.05rem; opacity: 0.92; line-height: 1.7;">Mi consultorio está equipado para estudiar, diagnosticar y resolver la mayoría de las patologías de oído, nariz y garganta en una sola visita. Usted observa su propio estudio en pantalla durante el examen y se retira con un diagnóstico claro, un informe documentado y un plan de tratamiento definido.</p>
@@ -42,7 +43,7 @@
                 <p class="mb-5" style="font-size: 1.15rem; line-height: 1.7; color: #555;">
                     Contamos con equipamiento de primer nivel para realizar un diagnóstico preciso y resolver múltiples patologías directamente en la consulta, sin necesidad de internación.
                 </p>
-                <a href="{% url 'diagnostic' %}" class="btn btn-primary btn-lg shadow d-inline-flex align-items-center gap-2" style="padding: 14px 32px; font-size: 1.1rem; border-radius: 50px; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(253,169,13,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                <a href="{% url 'diagnostic' %}" class="btn btn-primary btn-lg shadow d-inline-flex align-items-center gap-2" style="padding: 14px 32px; font-size: 1.1rem; border-radius: 50px; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(0,57,121,0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
                     Ver equipamiento <i class="bi bi-arrow-right"></i>
                 </a>
             </div>

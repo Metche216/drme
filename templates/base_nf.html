@@ -27,7 +27,7 @@
       }
 
       :root {
-        --primary-color: #fda90d;
+        --primary-color: #003979;
         --secondary-color: #5c80a0;
         --accent-color: #20c997;
         --light-color: #f8f9fa;
@@ -84,10 +84,16 @@
       .navbar.scrolled .nav-link {
         color: var(--dark-color) !important;
       }
-
+      .navbar.scrolled .nav-link.btn-primary {
+        color: white !important;
+      }
+      .navbar.scrolled .navbar-brand {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
 
       .section {
-        padding: 80px 0;
+        padding: 50px 0;
       }
 
       .card {
@@ -104,18 +110,19 @@
       .btn-primary {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
+        color: white !important;
         padding: 10px 20px;
         border-radius: 5px;
       }
 
       .btn-primary:hover {
-        background-color: #d7670b;
+        background-color: #002855;
         border-color: #0b5dd700;
       }
       .btn-primary:focus,
       .btn-primary:active {
           background-color: #e68a40 !important; /* Your custom color */
-          border-color: #d7670b !important; /* Your custom border color */
+          border-color: #002855 !important; /* Your custom border color */
           box-shadow: none !important; /* Remove the default blue outline */
           color: white !important; /* Ensure text color stays consistent */
       }
@@ -143,9 +150,9 @@
       }
 
       .navbar.scrolled .btn-outline-primary:hover {
-        background-color: #d7670b;
+        background-color: #002855;
         color: white;
-        border-color: #d7670b;
+        border-color: #002855;
       }
 
       /* Greeting text visibility when scrolled */
@@ -181,7 +188,7 @@
         transition: all 0.2s;
       }
       .dropdown-item:hover {
-        background-color: rgba(253, 169, 13, 0.08);
+        background-color: rgba(0, 57, 121, 0.08);
         color: var(--primary-color);
         padding-left: 28px;
       }
@@ -209,7 +216,9 @@
       style="background-color: #21252900"
     >
       <div class="container">
-        <a class="navbar-brand" href="/">Dr.ME</a>
+        <a class="navbar-brand" href="/" style="opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;">
+            <img src="{% static 'icons/logo_sem_fundo.png' %}" alt="Dr.ME" style="max-height: 40px; width: auto; transform: scale(1.4); transform-origin: left center;">
+        </a>
         <button
           class="navbar-toggler"
           type="button"
